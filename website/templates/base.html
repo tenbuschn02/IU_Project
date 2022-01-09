@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login.css') }}"> -->
     <!-- <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -23,7 +24,7 @@
       <div class="container">
         <a class="logo" href="/">Wedding<span>Planner</span></a>
               
-        <img id="mobile-cta" class="mobile-menu" src="/static/images/menu.svg" alt="Open Navigation">
+        <img id="mobile-cta" class="mobile-menu" src="/static/images/menu.svg" alt="Open Navigation" onclick="showMenu()">
 
         <nav>
           <img id="mobile-exit" class="mobile-menu-exit" src="static/images/exit.svg" alt="Close Navigation">
@@ -42,23 +43,29 @@
       </div>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %} {% if category ==
-    'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% if messages %} 
+      {% for category, message in messages %} 
+        {% if category == 'error' %}
+          <div class="message" id="message">  
+            <div class="errorMessage" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" onclick="closeMessage(this)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% else %}
+            <div class="successMessage" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" onclick="closeMessage(this)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        {% endif %} 
+      {% endfor %} 
+    {% endif %} 
+    {% endwith %}
 
     <div class="container">{% block content %} {% endblock %}</div>
     <!-- <script
@@ -81,22 +88,6 @@
       type="text/javascript"
       src="{{ url_for('static', filename='index.js') }}"
     ></script>
-
-    <script>
-
-      const mobileBtn = document.getElementById('mobile-cta')
-        nav = document.querySelector('nav');
-        movileBtnExit = document.getElementById('mobile-exit');
-
-      mobileBtn.addEventListener('click', () => {
-        nav.classList.add('menu-btn');
-      })
-
-      movileBtnExit.addEventListener('click', () => {
-        nav.classList.remove('menu-btn');
-      })
-
-    </script>
 
   </body>
 </html>

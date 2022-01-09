@@ -68,7 +68,17 @@ nav a:hover {
   cursor: pointer;
 }
 
-@media only screen and (min-width: 768px) {
+.errorMessage {
+  background: #ffad99;
+  padding: 0.5em 0 0.5em 1.5em;
+}
+
+.successMessage {
+  background: #ccffcc;
+  padding: 0.5em 0 0.5em 1.5em;
+}
+
+@media only screen and (min-width: 750px) {
   .mobile-menu, .mobile-menu-exit {
     display: none;
   }
@@ -113,4 +123,70 @@ nav a:hover {
     background: var(--primary-color);
     color: white;
   }
+}
+.form-group {
+  margin: 1em 0 1em 3em;
+}
+.form-group label {
+  display: block;
+}
+.form-group .input {
+  margin-top: 0.5em;
+  height: 1.5em;
+  width: 20em;
+}
+.form-group .btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  margin-bottom: 5em;
+  border-radius: 0.5em;
+  display: inline-block;
+  padding: 0.8em 2em;
+  width: unset;
+  cursor: pointer;
+  margin-left: 3em;
+}
+.form-group .btn-primary:hover {
+  color: white;
+  background: grey;
+}
+.form-group .btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  margin-bottom: 5em;
+  border-radius: 0.5em;
+  display: inline-block;
+  padding: 0.8em 2em;
+  width: unset;
+  cursor: pointer;
+  margin-left: 3em;
+}
+.form-group .btn-primary:hover {
+  color: white;
+  background: grey;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  margin-bottom: 5em;
+  border-radius: 0.5em;
+  display: inline-block;
+  padding: 0.8em 2em;
+  width: unset;
+  cursor: pointer;
+  margin-left: 3em;
+}
+.btn-primary:hover {
+  color: white;
+  background: grey;
 }/*# sourceMappingURL=main.css.map */
