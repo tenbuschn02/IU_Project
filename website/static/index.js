@@ -7,8 +7,17 @@ function deleteNote(noteId) {
   });
 }
 
+
+function guestChange(guestId, tableFrom, tableTo) {
+  fetch("/guest-change", {
+    method: "POST",
+    body: JSON.stringify({ guestId: guestId, tableFrom: tableFrom, tableTo: tableTo }),
+  }).then((_res) => {
+    window.location.href = "/guest-list";
+  });
+}
+
 function showMenu() {
-  console.log('test')
   const mobileBtn = document.getElementById('mobile-cta')
         nav = document.querySelector('nav');
         movileBtnExit = document.getElementById('mobile-exit');
