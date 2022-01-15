@@ -79,7 +79,8 @@ nav a:hover {
 }
 
 @media only screen and (min-width: 750px) {
-  .mobile-menu, .mobile-menu-exit {
+  .mobile-menu,
+.mobile-menu-exit {
     display: none;
   }
 
@@ -184,9 +185,55 @@ nav a:hover {
   padding: 0.8em 2em;
   width: unset;
   cursor: pointer;
-  margin-left: 3em;
 }
 .btn-primary:hover {
   color: white;
   background: grey;
+}
+
+.flex-layout .flex-parent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.flex-layout .flex-parent .card {
+  margin: 2.5em;
+  padding: 0 2em 1em 2em;
+  border: solid #20272E;
+  border-width: 1px;
+  border-radius: 2em;
+}
+.flex-layout .flex-parent .card ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.flex-layout .flex-parent .card ul li .float-left {
+  float: left;
+  margin-right: 1em;
+}
+.flex-layout .flex-parent .card ul li .float-right {
+  float: right;
+}
+.flex-layout .flex-parent .card ul li .float-right button {
+  border-radius: 0.5em;
+}
+.flex-layout .flex-parent .card ul li .float-right .change {
+  background: #d9d9d9;
+}
+.flex-layout .flex-parent .card ul li .float-right .close {
+  background: #ba7979;
+  font-size: 1em;
+  padding: 0;
+}
+.flex-layout .flex-parent .card ul li:after {
+  content: "\a";
+  white-space: pre;
+}
+.flex-layout .flex-parent .card p {
+  font-weight: bold;
+}
+
+.form-control {
+  margin-bottom: 2em;
 }/*# sourceMappingURL=main.css.map */

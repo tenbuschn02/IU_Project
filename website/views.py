@@ -28,6 +28,10 @@ def home():
 @views.route('/guest-list', methods=['GET', 'POST'])
 @login_required
 def guest_list():
+    rowsOpen = db.session.query(GuestlistOpen).count()
+    rowsAcc = db.session.query(GuestlistAccepted).count()
+    rowsDec = db.session.query(GuestlistDeclined).count()
+    print(rowsOpen)
     if request.method == 'POST':
         guest = request.form.get('guest')
 
@@ -38,7 +42,7 @@ def guest_list():
             db.session.add(new_guest)
             db.session.commit()
             flash('Guest added!', category='success')
-    return render_template("guestlist.html", user=current_user)
+    return render_template("guestlist.html", user=current_user, rowsOpen=rowsOpen, rowsAcc=rowsAcc, rowsDec=rowsDec)
 
 
 @views.route('/delete-note', methods=['POST'])
@@ -61,14 +65,26 @@ def guest_open():
     tableFrom = guest['tableFrom']
     tableTo = guest['tableTo']
     guest = getattr(sys.modules[__name__], tableFrom).query.get(guestId)
-    print(guest)
     if guest:
-        print('test')
         if guest.user_id == current_user.id:
             db.session.delete(guest)
             db.session.commit()
             guest = getattr(sys.modules[__name__], tableTo)(name=guest.name, user_id=current_user.id, count=1)
             db.session.add(guest)
+            db.session.commit()
+
+    return jsonify({})
+
+@views.route('/guest-delete', methods=['POST'])
+def guest_del():
+    guest = json.loads(request.data)
+    guestId = guest['guestId']
+    tableFrom = guest['tableFrom']
+    guest = getattr(sys.modules[__name__], tableFrom).query.get(guestId)
+
+    if guest:
+        if guest.user_id == current_user.id:
+            db.session.delete(guest)
             db.session.commit()
 
     return jsonify({})

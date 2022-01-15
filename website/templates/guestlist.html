@@ -1,58 +1,103 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-    <h1 align="center">Guest List</h1>
-    <p>Guest List Open</p>
 
-    <ul class="guestList" id="guestlistOpen">
-      {% for guest in user.guestsOp %}
-      <li class="list-open">
-        {{ guest.name }}
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistAccepted')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistDeclined')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-      {% endfor %}
-    </ul>
+<h1 align="center">Guest List</h1>
 
-    <p>Guest List Accepted</p>
-    <ul class="guestList" id="guestlistAccepted">
-      {% for guest in user.guestsAcc %}
-      <li class="list-open">
-        {{ guest.name }}
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistOpen')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistDeclined')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-      {% endfor %}
-    </ul>
 
-    <p>Guest List Declined</p>
-    <ul class="guestList" id="guestlistDeclined">
-      {% for guest in user.guestsDec %}
-      <li class="list-open">
-        {{ guest.name }}
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistOpen')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <button type="button" class="close" onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistAccepted')"> 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-      {% endfor %}
-    </ul>
+<section class="flex-layout">
+    <div class="flex-parent">
+        <div class=card>
+            <p align="center">Guest List Pending ({{rowsOpen}})</p>
+            <ul class="guestList" id="guestlistOpen">
+                {% for guest in user.guestsOp %}
+                <li class="list-open">
+                    <div class="float-left">
+                        {{ guest.name }}
+                    </div>
 
-    <form method="POST">
-      <input name="guest" id="guest" class="form-control"></input>
-      <br />
-      <div align="center">
+                    <div class="float-right">
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistAccepted')">
+                            <span aria-hidden="true">Accepted</span>
+                        </button>
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistDeclined')">
+                            <span aria-hidden="true">Declined</span>
+                        </button>
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistOpen')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class=card>
+            <p align="center">Guest List Accepted ({{rowsAcc}})</p>
+            <ul class="guestList" id="guestlistAccepted">
+                {% for guest in user.guestsAcc %}
+                <li class="list-open">
+                    <div class="float-left">
+                        {{ guest.name }}
+                    </div>
+
+                    <div class="float-right">
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistOpen')">
+                            <span aria-hidden="true">Pending</span>
+                        </button>
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistDeclined')">
+                            <span aria-hidden="true">Declined</span>
+                        </button>
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistAccepted')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class=card>
+            <p align="center">Guest List Declined ({{rowsDec}})</p>
+            <ul class="guestList" id="guestlistDeclined">
+                {% for guest in user.guestsDec %}
+                <li class="list-open">
+                    <div class="float-left">
+                        {{ guest.name }}
+                    </div>
+
+                    <div class="float-right">
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistOpen')">
+                            <span aria-hidden="true">Pending</span>
+                        </button>
+                        <button type="button" class="change"
+                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistAccepted')">
+                            <span aria-hidden="true">Accepted</span>
+                        </button>
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistDeclined')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</section>
+<form method="POST">
+
+    <div align="center">
+        <input name="guest" id="guest" class="form-control"></input>
+        <br />
         <button type="submit" class="btn btn-primary">Add Guest</button>
-      </div>
-    </form>
-    {% endblock %}
-
-  
+    </div>
+</form>
+{% endblock %}
