@@ -201,7 +201,7 @@ nav a:hover {
   padding: 0 2em 1em 2em;
   border: solid #20272E;
   border-width: 1px;
-  border-radius: 2em;
+  border-radius: 1em;
 }
 .flex-layout .flex-parent .card ul {
   list-style-type: none;

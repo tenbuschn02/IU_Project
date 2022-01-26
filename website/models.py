@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     guestsAcc = db.relationship('GuestlistAccepted')
     guestsDec = db.relationship('GuestlistDeclined')
     guestsOp = db.relationship('GuestlistOpen')
+    guestsWait = db.relationship('GuestlistWaiting')
 
 
 class GuestlistOpen(db.Model):
@@ -35,6 +36,12 @@ class GuestlistAccepted(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class GuestlistDeclined(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+class GuestlistWaiting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     count = db.Column(db.Integer)
