@@ -106,6 +106,11 @@ def guest_list():
 
     return render_template("guestlist.html", user=current_user, rowsOpen=rowsOpen, rowsAcc=rowsAcc, rowsDec=rowsDec, rowsWait=rowsWait)
 
+@views.route('/foodcalc', methods=['GET', 'POST'])
+@login_required
+def foodcalc():
+    return render_template("foodcalc.html", user=current_user)
+
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():

@@ -196,6 +196,14 @@ nav {
 }
 
 //Guestlist
+//funktioniert noch nicht
+.add_guests {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: black;
+}
+
 .flex-layout {
     .flex-parent {
         display: flex;
