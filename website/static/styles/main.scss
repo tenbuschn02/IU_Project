@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+:root {
+    --primary-color: #007AF3;
+}
+
+body {
+    background: #F2F2F2;
+    margin: 0;
+    font-family: 'Poppins';
+}
+
+.navbar {
+    background: white;
+    padding: 1em;
+    .logo {
+        text-decoration: none;
+        font-weight: bold;
+        color: black;
+        font-size: 1.2em;
+        span {
+            color: var(--primary-color);
+        }
+    }
+    nav {
+        display: none;
+    }
+    .container {
+        display: flex;
+        place-content: space-between;
+    }
+    .mobile-menu {
+        cursor: pointer;
+    }
+}
+
+nav.menu-btn {
+    display: block;
+}
+
+nav {
+    position: fixed;
+    z-index: 999;
+    width: 33%;
+    right: 0;
+    top: 0;
+    background: #20272E;
+    height: 100vh;
+    padding: 1em;
+    ul.primary-nav {
+        margin-top: 5em;
+    }
+    a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: .5em;
+        font-size: 1.3em;
+        text-align: right;
+        &:hover {
+            font-weight: bold;
+        }
+    }
+}
+
+.mobile-menu-exit {
+    float: right;
+    margin: .5em;
+    cursor: pointer;
+}
+
+.errorMessage {
+    background: #ffad99;
+    padding: .5em 0 .5em 1.5em;
+}
+
+.successMessage {
+    background: #ccffcc;
+    padding: .5em 0 .5em 1.5em;
+}
+
+@media only screen and (min-width: 750px) {
+    .mobile-menu,
+    .mobile-menu-exit {
+        display: none;
+    }
+    .navbar .container {
+        display: grid;
+        grid-template-columns: 180px auto;
+        justify-content: unset;
+    }
+    .navbar nav {
+        display: flex;
+        justify-content: space-between;
+        background: none;
+        position: unset;
+        height: auto;
+        width: 100%;
+        padding: 0;
+        ul {
+            display: flex;
+        }
+        a {
+            color: black;
+            font-size: 1em;
+            padding: .1em 1em;
+        }
+        ul.primary-nav {
+            margin: 0;
+        }
+        li.current a {
+            font-weight: bold;
+        }
+        li.go-premium-cta a {
+            color: var(--primary-color);
+            border: 3px solid var(--primary-color);
+            font-weight: bold;
+            border-radius: 5em;
+            margin-top: -.2em;
+            &:hover {
+                background: var(--primary-color);
+                color: white;
+            }
+        }
+    }
+}
+
+// login page
+.form-group {
+    margin: 1em 0 1em 3em;
+    // text-align: center;
+    // display: flex;
+    // display: inline-block;
+    label {
+        display: block;
+    }
+    .input {
+        margin-top: .5em;
+        height: 1.5em;
+        width: 20em;
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+        font-size: 1em;
+        border: none;
+        margin-bottom: 5em;
+        border-radius: 0.5em;
+        display: inline-block;
+        padding: .8em 2em;
+        width: unset;
+        cursor: pointer;
+        margin-left: 3em;
+        &:hover {
+            color: white;
+            background: grey;
+        }
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+        font-size: 1em;
+        border: none;
+        margin-bottom: 5em;
+        border-radius: 0.5em;
+        display: inline-block;
+        padding: .8em 2em;
+        width: unset;
+        cursor: pointer;
+        margin-left: 3em;
+        &:hover {
+            color: white;
+            background: grey;
+        }
+    }
+}
+
+//Add note, Add Guest...
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    margin-bottom: 5em;
+    border-radius: 0.5em;
+    display: inline-block;
+    padding: .8em 2em;
+    width: unset;
+    cursor: pointer;
+    &:hover {
+        color: white;
+        background: grey;
+    }
+}
+
+//Guestlist
+//funktioniert noch nicht
+.add_guests {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: black;
+}
+
+.flex-layout {
+    .flex-parent {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        .card {
+            margin: 2.5em;
+            padding: 0 2em 1em 2em;
+            border: solid #20272E;
+            border-width: 1px;
+            border-radius: 1em;
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                li {
+                    .float-left {
+                        float: left;
+                        margin-right: 1em;
+                    }
+                    .float-right {
+                        float: right;
+
+                        button {
+                            border-radius: 0.5em;
+                        }
+
+                        .change {
+                            background: #d9d9d9;
+                        }
+
+                        .close {
+                            background: #ba7979;
+                            font-size: 1em;
+                            padding: 0;
+                        }
+                    }
+                }
+                li:after {
+                    content: "\A";
+                    white-space: pre;
+                }
+            }
+            p {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.form-control {
+    margin-bottom: 2em;
+}

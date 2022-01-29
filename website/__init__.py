@@ -13,7 +13,10 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-
+    #Test: maybe to be removed
+    UPLOAD_FOLDER = 'website/static/files'
+    app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
+    #
 
     from .views import views
     from .auth import auth

@@ -16,3 +16,34 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+    guestsAcc = db.relationship('GuestlistAccepted')
+    guestsDec = db.relationship('GuestlistDeclined')
+    guestsOp = db.relationship('GuestlistOpen')
+    guestsWait = db.relationship('GuestlistWaiting')
+
+
+class GuestlistOpen(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class GuestlistAccepted(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class GuestlistDeclined(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+class GuestlistWaiting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
