@@ -7,11 +7,29 @@ function deleteNote(noteId) {
     });
 }
 
+function deleteFood(foodId) {
+    fetch("/delete-food", {
+        method: "POST",
+        body: JSON.stringify({ foodId: foodId }),
+    }).then((_res) => {
+        window.location.href = "/foodcalc";
+    });
+}
 
-function guestChange(guestId, tableFrom, tableTo) {
+function deleteTable(tableId) {
+    fetch("/delete-table", {
+        method: "POST",
+        body: JSON.stringify({ tableId: tableId }),
+    }).then((_res) => {
+        window.location.href = "/table-overview";
+    });
+}
+
+
+function guestChange(guestId, new_status) {
     fetch("/guest-change", {
         method: "POST",
-        body: JSON.stringify({ guestId: guestId, tableFrom: tableFrom, tableTo: tableTo }),
+        body: JSON.stringify({ guestId: guestId, new_status: new_status }),
     }).then((_res) => {
         window.location.href = "/guest-list";
     });
@@ -20,7 +38,16 @@ function guestChange(guestId, tableFrom, tableTo) {
 function guestDelete(guestId, tableFrom) {
     fetch("/guest-delete", {
         method: "POST",
-        body: JSON.stringify({ guestId: guestId, tableFrom: tableFrom }),
+        body: JSON.stringify({ guestId: guestId }),
+    }).then((_res) => {
+        window.location.href = "/guest-list";
+    });
+}
+
+function deleteAllGuests() {
+    fetch("/delete-all", {
+        method: "POST",
+        body: JSON.stringify(),
     }).then((_res) => {
         window.location.href = "/guest-list";
     });

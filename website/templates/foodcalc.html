@@ -2,6 +2,106 @@
 
 <h1 align="center">Food Calculator</h1>
 
+<div class="header">
+
+	<div class=" header-part slidecontainer">
+		<p>Share of accepted invitations [%]</p>
+		
+		<form method="POST">
+			<input name="ratio" type="range" class="slider" value={{ratio}} min="1" max="100" oninput="this.nextElementSibling.value = this.value">
+			<output>{{ ratio }}</output>
+			<button type="submit" class="submit_ratio" name="submit" value="submit_ratio">Save</button>
+		</form>
+	</div>
+
+	<div class="header-part guest_overview">
+		<h3>Guests Overview</h3>
+		<div class="guest_count">
+			<table>
+				<tr>
+					<th>Group</th>
+					<th>Count</th>
+				</tr>
+				<tr>
+					<td>Men</td>
+					<td>{{ male_guests }}</td>
+				</tr>
+				<tr>
+					<td>Women</td>
+					<td>{{ female_guests }}</td>
+				</tr>
+				<tr>
+					<td>Children</td>
+					<td>{{ child_guests }}</td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+	
+	<div class="header-part food-overview">
+		<h3>Total Food Overview</h3>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Amount</th>
+				<th>Price</th>
+			</tr>
+			{% for food in user.food %}
+			<tr>
+				<td>{{ food.name }}</td>
+				<td>{{ (food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3)|round }}</td>
+				<td>{{ ((food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3) * food.price)|round }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+
+
+<form method="POST">
+	<div class="Foodlist">
+		<table id="food-table">
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Amount/Man</th>
+			<th>Amount/Woman</th>
+			<th>Amount/Children</th>
+		</tr>
+		{% for food in user.food %}
+			<tr>
+				<td>{{ food.name }}</td>
+				<td>{{ food.price }}</td>
+				<td>{{ food.amount_1 }}</td>
+				<td>{{ food.amount_2 }}</td>
+				<td>{{ food.amount_3 }}</td>
+				<td>
+					<button type="button" class="close" onClick="deleteFood({{ food.id }})">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td><input name="food_name" id="food_name" class="form-control"></input></td>
+				<td><input name="food_price" id="food_price" type="number" class="input-number" step="any"></input></td>
+				<td><input name="amount_1" id="amount_1" type="number" class="input-number" step="any"></input></td>
+				<td><input name="amount_2" id="amount_2" type="number" class="input-number" step="any"></input></td>
+				<td><input name="amount_3" id="amount_3" type="number" class="input-number" step="any"></input></td>
+				<td><button type="submit" name="submit" class="add_table_value" value="add_food">Add</button></td>
+			</tr>
+		</table>
+	</div>
+</form>
+
+
+
+<!-- <script>
+	var table = document.getElementById("food-table"), 
+
+</script> -->
 
 
 

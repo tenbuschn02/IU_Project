@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+<h1 align="center">Table Overview</h1>
+
+<form method="POST">
+
+    <div class="assign_table">
+        <select name="tables" id="tables">
+            {% for t in tableList %}
+                <option name="selected_table" value={{t.id}}>{{t.name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="submit" class="add_table_value" value="assign_table">Assign Table</button>
+    </div>
+    
+
+    <section class="flex-layout">
+        <div class="flex-parent">
+            <div class=card>
+                <p align="center">Guests</p>
+                <ul class="guestList" id="guestOpenAndAcc">
+                    <p>Accepted</p>
+
+                    {% for guest in guestsAccepted %}
+                    <li class="list">
+                        <div class="float-left">
+                            {{ guest.name }}
+                        </div>
+
+                        <div class="float-right">
+                            <input type="checkbox" id="selected_acc" name="selected" value={{ guest.id }}>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <p>Open</p>
+                    {% for guest in guestsOpen %}
+                    <li class="list">
+                        <div class="float-left">
+                            {{ guest.name }}
+                        </div>
+
+                        <div class="float-right">
+                            {{ guest.table_id }}
+                            <input type="checkbox" id="selected_op" name="selected" value={{ guest.id }}>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            
+            <div class="add_table">
+                <input name="table_name" id="table_name"></input>
+                <input name="max_guests" id="max_guests" type="number" class="input-number"></input>
+                <button type="submit" name="submit" class="add_table_value" value="add_table">Add Table</button>
+            </div>
+            
+
+            <div class="card">
+                <ul class="tableList" id="tableList">
+                    <p>Tables</p>
+                    {% for table in user.table %}
+                    <li class="list">
+                        <div class="float-left">
+                            {{ table.name }}
+                        </div>
+
+                        <div class="float-right">
+                            {{ table.max_guests }}
+                            <button type="button" class="close" onClick="deleteTable({{ table.id }})">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+
+{% endblock %}

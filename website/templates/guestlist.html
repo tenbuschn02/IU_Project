@@ -4,19 +4,28 @@
 
 <div class="add_guests">
     <form method="POST">
-
         <div align="center">
             <input name="guest" id="guest" class="form-control"></input>
+            <select name="group" id="group">
+                {% for g in groupsList %}
+                    <option value={{g.id}}>{{g.name}}</option>
+                {% endfor %}
+            </select>
             <br />
-            <button type="submit" class="btn btn-primary" name="submit" value="add_guest">Guestlist</button>
-            <button type="submit" class="btn btn-primary" name="submit" value="add_guest_waiting">Waitinglist</button>
+            <button type="submit" class="btn btn-primary add-button" name="submit" value="add_guest">Guestlist</button>
+            <button type="submit" class="btn btn-primary add-button" name="submit" value="add_guest_waiting">Waitinglist</button>
         </div>
     </form>
     
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p><input type="file" name="file"></p>
-        <p><input type="submit" name="submit" value="upload_csv"></p>
-    </form>
+    <div class=upload_csv>
+        <form method="POST" action="" enctype="multipart/form-data" name="upload_csv">
+            <p><input type="file" name="file"></p>
+            <p><input type="submit" name="submit" value="Upload CSV"></p>
+        </form>
+        <button type="button" class="close" onClick="deleteAllGuests()">
+            <span aria-hidden="true">Delete all guests</span>
+        </button>
+    </div>   
 </div>
 
 
@@ -26,7 +35,7 @@
         <div class=card>
             <p align="center">Pending ({{rowsOpen}})</p>
             <ul class="guestList" id="guestlistOpen">
-                {% for guest in user.guestsOp %}
+                {% for guest in guestsOpen %}
                 <li class="list-open">
                     <div class="float-left">
                         {{ guest.name }}
@@ -34,14 +43,14 @@
 
                     <div class="float-right">
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistAccepted')">
+                            onClick="guestChange({{ guest.id }}, 2)">
                             <span aria-hidden="true">Accepted</span>
                         </button>
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistDeclined')">
+                            onClick="guestChange({{ guest.id }}, 3)">
                             <span aria-hidden="true">Declined</span>
                         </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistOpen')">
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }})">
                             <span aria-hidden="true">&times;</span>
                         </button>
 
@@ -55,7 +64,7 @@
         <div class=card>
             <p align="center">Accepted ({{rowsAcc}})</p>
             <ul class="guestList" id="guestlistAccepted">
-                {% for guest in user.guestsAcc %}
+                {% for guest in guestsAccepted %}
                 <li class="list-open">
                     <div class="float-left">
                         {{ guest.name }}
@@ -63,14 +72,14 @@
 
                     <div class="float-right">
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistOpen')">
+                            onClick="guestChange({{ guest.id }}, 1)">
                             <span aria-hidden="true">Pending</span>
                         </button>
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistDeclined')">
+                            onClick="guestChange({{ guest.id }}, 3)">
                             <span aria-hidden="true">Declined</span>
                         </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistAccepted')">
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }})">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -83,7 +92,7 @@
         <div class=card>
             <p align="center">Declined ({{rowsDec}})</p>
             <ul class="guestList" id="guestlistDeclined">
-                {% for guest in user.guestsDec %}
+                {% for guest in guestsDeclined %}
                 <li class="list-open">
                     <div class="float-left">
                         {{ guest.name }}
@@ -91,14 +100,14 @@
 
                     <div class="float-right">
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistOpen')">
+                            onClick="guestChange({{ guest.id }}, 1)">
                             <span aria-hidden="true">Pending</span>
                         </button>
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistAccepted')">
+                            onClick="guestChange({{ guest.id }}, 2)">
                             <span aria-hidden="true">Accepted</span>
                         </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistDeclined')">
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }})">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -111,7 +120,7 @@
         <div class=card>
             <p align="center">Waiting ({{rowsWait}})</p>
             <ul class="guestList" id="guestlistWaiting">
-                {% for guest in user.guestsWait %}
+                {% for guest in guestsWaiting %}
                 <li class="list-open">
                     <div class="float-left">
                         {{ guest.name }}
@@ -119,11 +128,11 @@
 
                     <div class="float-right">
                         <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistWaiting', 'GuestlistOpen')">
+                            onClick="guestChange({{ guest.id }}, 1)">
                             <span aria-hidden="true">Open</span>
                         </button>
 
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistWaiting')">
+                        <button type="button" class="close" onClick="guestDelete({{ guest.id }})">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
