@@ -4,7 +4,7 @@
 	  <h2 align="center">Login</h2>
 	  <div class="form-group">
 		<label for="email">Email Address</label>
-		<input class="input"
+		<input 
 		  type="email"
 		  class="form-control"
 		  id="email"
@@ -14,7 +14,7 @@
 	  </div>
 	  <div class="form-group">
 		<label for="password">Password</label>
-		<input class="input"
+		<input
 		  type="password"
 		  class="form-control"
 		  id="password"
@@ -23,7 +23,17 @@
 		/>
 	  </div>
 	  <br />
-	  <button type="submit" class="btn btn-primary">Login</button>
+	  <div class="container">
+		  <div class="row d-flex justify-content-start ml-0">
+			  <div class="col-4 m-0 p-0">
+				<form method="POST">
+					<button type="submit" name = "submit" class="btn btn-primary" value="login">Login</button>
+				</form>
+				or
+				<button type="submit" name = "submit" class="btn btn-primary" onclick="location.href='/sign-up';" value="signup">Sign Up</button>
+			  </div>
+		  </div>
+	  </div>
 	</form>
 
 	{% endblock %}

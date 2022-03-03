@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+<div class="container">
+	<div class="row">
+		<h1 align="center">Finances</h1>
+	</div>
+	
+	<div class="row">
+		<form method="POST">
+			<div class="CostsList">
+				<table class="table" id="costs-table">
+					<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for food in user.food %}
+						<tr>
+							<td scope="row">{{ food.name }}</td>
+							<td> {{ "€ %.2f"|format((food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * child_guests) * food.price) }} </td>
+							<td>
+								<button type="button" class="close btn btn-primary" style="width: 100%;" onClick="deleteFood({{ food.id }})">
+									<span aria-hidden="true">&#128465;</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+				
+						{% for cost in user.costs %}
+						<tr>
+							<td scope="row">{{ cost.name }}</td>
+							<td>{{ "€ %.2f"|format(cost.price) }}</td>
+							<td>
+								<button type="button" class="close btn btn-primary" style="width: 100%;" onClick="deleteCost({{ cost.id }})">
+									<span aria-hidden="true">&#128465;</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td><input name="cost_name" id="cost_name" class="form-control"></input></td>
+							<td><input name="cost_price" id="cost_price" type="number" class="input-number form-control" step="any"></input></td>
+							<td><button type="submit" name="submit" class="add_table_value btn btn-primary" style="width: 100%;" value="add_cost">Add</button></td>
+						</tr>
+						<tr>
+							<td><b>Sum</b></td>
+							<td><span><b>{{ "€ %.2f"|format(sum) }}</b></span></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+
+{% endblock %}

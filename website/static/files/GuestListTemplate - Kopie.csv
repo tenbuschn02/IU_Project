@@ -1,0 +1,8 @@
+﻿guestlist_open;open_group;guestlist_accepted;accepted_group;guestlist_declined;declined_group;guestlist_waiting;waiting_group;;;;;HowTo;
+First Guest Pending;1;First Guest Accepted;3;;;;;;;;;1) Delete example names and group ids in columns A-D;
+Second Guest Pending;2;;;;;;;;;;;2) Add all guest names and their groupId (1,2 or 3) in the corresponding columns (A-H);
+äöü;3;;;;;;;;;;;;
+;;;;;;;;;;;;GroupId;Group
+;;;;;;;;;;;;1;Male
+;;;;;;;;;;;;2;Female
+;;;;;;;;;;;;3;Child

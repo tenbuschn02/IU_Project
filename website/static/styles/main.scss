@@ -180,13 +180,15 @@ nav {
 
 //Guestlist
 //funktioniert noch nicht
-.add_guests {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    .add-button {
-        margin-top: 1em;
-    }
+// .add_guests {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+// }
+
+.add-button {
+    margin-top: 1em;
+    color: black;
 }
 
 .upload_csv {

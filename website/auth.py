@@ -9,19 +9,24 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        mode = request.form['submit']
+        if mode == 'login':
+            email = request.form.get('email')
+            password = request.form.get('password')
 
-        user = User.query.filter_by(email=email).first()
-        if user:
-            if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+            user = User.query.filter_by(email=email).first()
+            if user:
+                if check_password_hash(user.password, password):
+                    flash('Logged in successfully!', category='success')
+                    login_user(user, remember=True)
+                    return redirect(url_for('views.home'))
+                else:
+                    flash('Incorrect password, try again', category='danger')
             else:
-                flash('Incorrect password, try again', category='error')
-        else:
-            flash('Email does not exist', category='error')
+                flash('Email does not exist', category='danger')
+        elif mode == 'signup':
+            pass
+
                 
     return render_template("login.html", user=current_user)
 
@@ -41,15 +46,15 @@ def sign_up():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            flash('Email already exists.', category='error')
+            flash('Email already exists.', category='danger')
         elif len(email) < 4:
-            flash('Email must be greater than 3 characters', category='error')
+            flash('Email must be greater than 3 characters', category='danger')
         elif len(first_name) < 2:
-            flash('First name must be greater than 1 characters', category='error')
+            flash('First name must be greater than 1 characters', category='danger')
         elif password1 != password2:
-            flash('Passwords don\'t match', category='error')
+            flash('Passwords don\'t match', category='danger')
         elif len(password1) < 3:
-            flash('Password must be at least 3 characters', category='error')
+            flash('Password must be at least 3 characters', category='danger')
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)

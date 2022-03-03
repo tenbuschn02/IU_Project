@@ -174,13 +174,9 @@ nav a:hover {
   background: grey;
 }
 
-.add_guests {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.add_guests .add-button {
+.add-button {
   margin-top: 1em;
+  color: black;
 }
 
 .upload_csv {

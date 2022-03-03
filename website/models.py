@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     accepted_ratio = db.relationship('AcceptedRatio')
     food = db.relationship('Food')
     table = db.relationship('Table')
+    costs = db.relationship('Costs')
     #food_person = db.relationship('FoodPerson')
 
 class Group(db.Model):
@@ -53,10 +54,10 @@ class Status(db.Model):
 
 @event.listens_for(Guest.__table__, 'after_create')
 def create_groups(*args, **kwargs):
-        db.session.add(Group(name='Open'))
-        db.session.add(Group(name='Accepted'))
-        db.session.add(Group(name='Declined'))
-        db.session.add(Group(name='Waiting'))
+        db.session.add(Status(name='Open'))  
+        db.session.add(Status(name='Accepted'))
+        db.session.add(Status(name='Declined'))
+        db.session.add(Status(name='Waiting'))
         db.session.commit()
 
 
@@ -79,10 +80,10 @@ class Table(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(150))
     max_guests = db.Column(db.Integer)
+    guest = db.relationship('Guest')
 
-# class FoodPerson(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     food_id = db.Column(db.Integer, db.ForeignKey('food.id'))
-#     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-#     amount = db.Column(db.Float)
+class Costs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(150))
+    price = db.Column(db.Float)
