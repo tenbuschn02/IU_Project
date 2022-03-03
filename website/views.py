@@ -12,7 +12,7 @@ views = Blueprint('views', __name__)
 
 
 
-
+# Welcome page
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -31,6 +31,7 @@ def home():
     return render_template("home.html", user=current_user)
 
 
+# Maintaining the guest list. Containing four lists of guests related to the status of their invitation (Waiting list, Pending, accepted, declined)
 @views.route('/guest-list', methods=['GET', 'POST'])
 @login_required
 def guest_list():
@@ -46,6 +47,7 @@ def guest_list():
         
         if mode == 'Upload CSV':
 
+            # Use uploaded CSV to create guest list
             uploaded_file = request.files['file']
             name, extension = os.path.splitext(uploaded_file.filename)
 
@@ -58,11 +60,13 @@ def guest_list():
                 uploaded_file.save(file_path)
 
                 try:
+                    # Read from csv
                     openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True)
                     acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True)
                     declinedCsv = pd.read_csv(file_path, usecols = ['guestlist_declined', 'declined_group'], sep=None, skip_blank_lines=True)
                     waitingCsv = pd.read_csv(file_path, usecols = ['guestlist_waiting', 'waiting_group'], sep=None, skip_blank_lines=True)
 
+                    # Remove na
                     openCsv = openCsv[openCsv['guestlist_open'].notna()]
                     acceptedCsv = acceptedCsv[acceptedCsv['guestlist_accepted'].notna()]
                     declinedCsv = declinedCsv[declinedCsv['guestlist_declined'].notna()]
@@ -72,34 +76,28 @@ def guest_list():
                     declinedCsv = declinedCsv[declinedCsv['declined_group'].notna()]
                     waitingCsv = waitingCsv[waitingCsv['waiting_group'].notna()]
 
-                    print(openCsv['open_group'])
+                    # Check group columns for correct ids
                     for line in openCsv['open_group']:
-                        print(line)
                         if not 1 <= line <=3:
-                            print('open error')
                             raise TypeError()
                     for line in acceptedCsv['accepted_group']:
                         if not 1 <= line <=3:
-                            print('accepted error')
-                            print(line)
                             raise TypeError
                     for line in declinedCsv['declined_group']:
                         if not 1 <= line <=3:
-                            print('declined error')
-                            print(line)
                             raise TypeError
                     for line in waitingCsv['waiting_group']:
                         if not 1 <= line <=3:
-                            print('waiting error')
-                            print(line)
                             raise TypeError
                 
+                # Wrong group id
                 except TypeError as te:
                     flash('Group Ids in uploaded file must be either 1 (male), 2 (female) or 3 (child)', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(te).__name__, te.args)
                     print(message)
-                    
+
+                # All other execptions, most probably wrong column name 
                 except Exception as ex:
                     flash('Wrong column names in uploaded file, please use the template', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -107,35 +105,42 @@ def guest_list():
                     print(message)
                 else:
 
+                    # Rename the columns
                     openCsv.rename(columns={'guestlist_open': 'name', 'open_group': 'group_id'}, inplace=True)
                     acceptedCsv.rename(columns={'guestlist_accepted': 'name', 'accepted_group': 'group_id'}, inplace=True)
                     declinedCsv.rename(columns={'guestlist_declined': 'name', 'declined_group': 'group_id'}, inplace=True)
                     waitingCsv.rename(columns={'guestlist_waiting': 'name', 'waiting_group': 'group_id'}, inplace=True)
 
+                    # Add User Id column
                     openCsv['user_id']=current_user.id
                     acceptedCsv['user_id']=current_user.id
                     declinedCsv['user_id']=current_user.id
                     waitingCsv['user_id']=current_user.id
 
+                    # Add invitations sent column (not used yet)
                     openCsv['invitation_sent']=False
                     acceptedCsv['invitation_sent']=False
                     declinedCsv['invitation_sent']=False
                     waitingCsv['invitation_sent']=False
 
+                    # Add status id
                     openCsv['status_id']=1
                     acceptedCsv['status_id']=2
                     declinedCsv['status_id']=3
                     waitingCsv['status_id']=4
 
+                    # Write to sqllite db
                     openCsv.to_sql('guest', con=db.engine, if_exists='append', index=False)
                     acceptedCsv.to_sql('guest', con=db.engine, if_exists='append', index=False)
                     declinedCsv.to_sql('guest', con=db.engine, if_exists='append', index=False)
                     waitingCsv.to_sql('guest', con=db.engine, if_exists='append', index=False)
 
+                    # delete uploaded file
                     os.remove(file_path)
     
         elif mode == 'add_guest' or mode =='add_guest_waiting':
 
+            # Add manually created guest either to waiting list or to pending list
             guest = request.form.get('guest')
             group = request.form.get('group')
 
@@ -154,12 +159,13 @@ def guest_list():
                     db.session.commit()
                     flash('Guest added!', category='success')
 
+    # get the amount of guests per status to show on website (guest list)
     rowsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1).count()
     rowsAcc = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=2).count()
     rowsDec = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=3).count()
     rowsWait = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=4).count()
 
-
+    # Get all guests per status to show on website (guest list)
     guestsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1)
     guestsAccepted = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=2)
     guestsDeclined = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=3)
@@ -167,12 +173,15 @@ def guest_list():
 
     return render_template("guestlist.html", guestsOpen=guestsOpen, guestsDeclined=guestsDeclined, guestsAccepted=guestsAccepted, guestsWaiting=guestsWaiting, user=current_user, rowsOpen=rowsOpen, rowsAcc=rowsAcc, rowsDec=rowsDec, rowsWait=rowsWait, groupsList=groupsList)
 
+
+# Calculation tool for food amount and costs
 @views.route('/foodcalc', methods=['GET', 'POST'])
 @login_required
 def foodcalc():
 
+    # Define the ratio of accepted invitations (default value 80%)
     if not db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).first():
-        ratio = 50
+        ratio = 80
     else:
         ratio = db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).first().ratio
 
@@ -181,18 +190,18 @@ def foodcalc():
         mode = request.form['submit']
 
         if mode == 'submit_ratio':
+            # Addapt the expected share of accepted invitations
             ratio = request.form.get('ratio', type=int)
             if not db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).first():
                 ratio = AcceptedRatio(ratio=ratio, user_id=current_user.id)
                 db.session.add(ratio)
                 ratio=ratio.ratio
-                print('if')
             else:
                 db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).update({"ratio": ratio})
-                print('else')
             db.session.commit()
         
         elif mode == 'add_food':
+            # Add new food to the food list
             food_name = request.form.get('food_name')
             food_price = request.form.get('food_price')
             amount_1 = request.form.get('amount_1')
@@ -219,6 +228,7 @@ def foodcalc():
                 flash('Food added!', category='success')
             print('food added')
 
+    # get amount of guests per group to show on website and use for calculation for expected amount of needed food
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
     male_guests = round(male_guests + db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=1).count() * ratio/100)
     female_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=2, status_id=2).count()
@@ -229,6 +239,7 @@ def foodcalc():
     return render_template("foodcalc.html", user=current_user, male_guests=male_guests, female_guests=female_guests, child_guests=child_guests, ratio=ratio)
 
 
+# Maintaining a list of tables. Uses guest list to assign guest to a table
 @views.route('/table-overview', methods=['GET', 'POST'])
 @login_required
 def table_overview():
@@ -240,6 +251,7 @@ def table_overview():
         mode = request.form['submit']
 
         if mode == 'add_table':
+            # Add a new table to the list of tables, including maximum amount of guests
             table_name = request.form.get('table_name')
             max_guests = request.form.get('max_guests', type=int)
 
@@ -254,6 +266,7 @@ def table_overview():
                 flash('Table added!', category='success')
 
         elif mode == 'assign_table':
+            # Assign the selected table to all selected guests
             for guest in selected_guests:
                 guestAmount = db.session.query(Guest).filter_by(table_id=selected_table).count()
                 max_guests = db.session.query(Table.max_guests).filter_by(id=selected_table).scalar()
@@ -271,29 +284,33 @@ def table_overview():
                     flash('Table already full', category='danger')
 
         elif mode == 'unassign':
+            # unassign a guest from a table --> puts him back to list of guests without assigned tables
             for guest in selected_guests:
                 db.session.query(Guest).filter_by(user_id=current_user.id, id=guest).update({"table_id": None})
 
 
+    # Get list of tables, guest with pending and accepted invitation status and the amount of guests to show on website (page table overview)
     tableList = Table.query.all()      
     guestsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1, table_id = None)
     guestsAccepted = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=2, table_id = None)  
     rowsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1, table_id = None).count()
     rowsAcc = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=2, table_id = None).count()
 
-    
-
     return render_template("tables.html",user=current_user, tableList=tableList, guestsOpen=guestsOpen, guestsAccepted=guestsAccepted, rowsOpen=rowsOpen, rowsAcc=rowsAcc)
 
+
+# financial overview
+# Showing data added manually and data from food calculator
 @views.route('/finances', methods=['GET', 'POST'])
 @login_required
 def finances():
 
-    
-
-    #ratio und male_guests etc auslagern in Funktion
+     # Get the ratio of accepted invitations (default value 80%)
     if not db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).first():
-        ratio = 50
+        ratio = AcceptedRatio(ratio=80, user_id=current_user.id)
+        db.session.add(ratio)
+        db.session.commit()
+        ratio = ratio.ratio
     else:
         ratio = db.session.query(AcceptedRatio).filter_by(user_id=current_user.id).first().ratio
 
@@ -301,6 +318,7 @@ def finances():
         mode = request.form['submit']
         
         if mode == 'add_cost':
+            # Add cost manually
             cost_name = request.form.get('cost_name')
             cost_price = request.form.get('cost_price')
 
@@ -315,6 +333,7 @@ def finances():
                 flash('Cost added!', category='success')
             print('cost added')
 
+    # Get amount of guests per group to display on website and to calculate the costs
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
     male_guests = round(male_guests + db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=1).count() * ratio/100)
     female_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=2, status_id=2).count()
@@ -322,22 +341,22 @@ def finances():
     child_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=3, status_id=2).count()
     child_guests = round(child_guests + db.session.query(Guest).filter_by(user_id=current_user.id, group_id=3, status_id=1).count() * ratio/100)
 
-    
-
     foods = db.session.query(Food).filter_by(user_id=current_user.id).all()
     costs = db.session.query(Costs).filter_by(user_id=current_user.id).all()
     db.session.commit()
   
+    # Calculate the total costs (food and manually added costs)
     sum=0
     for food in foods:
         sum = sum + food.price * (food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * child_guests)
-    print(sum)
+
     for cost in costs:
         sum = sum + cost.price
-    print(sum)
+
     return render_template("finances.html", user=current_user, male_guests=male_guests, female_guests=female_guests, child_guests=child_guests, ratio=ratio, sum=sum)
 
 
+# Auxiliary page to delete a note
 @views.route('/delete-note', methods=['POST'])
 @login_required
 def delete_note():
@@ -351,7 +370,7 @@ def delete_note():
 
     return jsonify({})
 
-
+# Auxiliary page to delete a food
 @views.route('/delete-food', methods=['POST'])
 @login_required
 def delete_food():
@@ -365,7 +384,7 @@ def delete_food():
 
     return jsonify({})
 
-
+# Auxiliary page to delete a cost
 @views.route('/delete-cost', methods=['POST'])
 @login_required
 def delete_cost():
@@ -379,7 +398,7 @@ def delete_cost():
 
     return jsonify({})
 
-
+# Auxiliary page to delete a table
 @views.route('/delete-table', methods=['POST'])
 @login_required
 def delete_table():
@@ -395,7 +414,7 @@ def delete_table():
 
     return jsonify({})
 
-
+# Auxiliary page to change the status of a guest (e.g. from pending to accepted)
 @views.route('/guest-change', methods=['POST'])
 @login_required
 def guest_open():
@@ -410,6 +429,7 @@ def guest_open():
 
     return jsonify({})
 
+# Auxiliary page to delete a guest
 @views.route('/guest-delete', methods=['POST'])
 @login_required
 def guest_del():
@@ -424,7 +444,7 @@ def guest_del():
 
     return jsonify({})
 
-
+# Auxiliary page to delete all guests
 @views.route('/delete-all', methods=['POST'])
 @login_required
 def delete_all():
@@ -432,7 +452,7 @@ def delete_all():
     db.session.commit()
     return jsonify({})
 
-
+# Auxiliary page to get the csv template
 @views.route('/get-template', methods=['GET','POST'])
 @login_required
 def get_template():
@@ -444,20 +464,3 @@ def get_template():
     print(send)
     return send
 
-
-# @application.route('upload.html',methods = ['POST'])
-# def upload_route_summary():
-#     if request.method == 'POST':
-
-#         # Create variable for uploaded file
-#         f = request.files['fileupload']  
-
-#         #store the file contents as a string
-#         fstring = f.read()
-#         print(fstring)
-        
-#         #create list of dictionaries keyed by header row
-#         #csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(fstring.splitlines(), skipinitialspace=True)]
-
-#         #do something list of dictionaries
-#     return "success"

@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
 
-
+<!-- Maintaining the guest list. Containing four lists of guests related to the status of their invitation (Waiting list, Pending, accepted, declined) -->
 <div class="container">
     <div class="row"><h1 align="center">Guest List</h1></div>
     <div class="row d-flex justify-content-between align-items-center">
         
+        <!-- Add a new guest to a group -->
         <div class="col">
             <p>Add New Guest</p>
             <form method="POST">
@@ -34,6 +35,7 @@
         </div>
 
         <div class="col d-flex justify-content-center">
+            <!-- Possibility to mass edit the guest list (delete all, download csv template, upload guest list as csv) -->
             <div class="col-8">
                 <div class="row">
                     <p>Mass Edit</p>
@@ -71,6 +73,7 @@
         </div>
     </div>
 
+    <!-- collapsable waiting list -->
     <div class="card mt-5  pb-2">
         <p class="m-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Waiting ({{rowsWait}})</p>
 
@@ -103,9 +106,10 @@
     </div>
 
     
-
+    
     <div class="row mt-5 d-flex justify-content-between pb-2">
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with pending invitations -->
             <p class="m-2">Pending ({{rowsOpen}})</p>
             <ul class="list-group">
                 {% for guest in guestsOpen %}
@@ -137,6 +141,7 @@
         </div>
 
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with accepted invitations -->
             <p class="m-2">Accepted ({{rowsAcc}})</p>
             <ul class="list-group">
                 {% for guest in guestsAccepted %}
@@ -168,6 +173,7 @@
         </div>
 
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with declined invitations -->
             <p class="m-2">Declined ({{rowsDec}})</p>
             <ul class="list-group">
                 {% for guest in guestsDeclined %}

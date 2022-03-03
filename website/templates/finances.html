@@ -1,5 +1,8 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
+<!-- financial overview -->
+<!-- Showing data added manually and data from food calculator -->
+
 <div class="container">
 	<div class="row">
 		<h1 align="center">Finances</h1>
@@ -16,6 +19,7 @@
 						</tr>
 					</thead>
 					<tbody>
+						<!-- show all costs of already added food -->
 						{% for food in user.food %}
 						<tr>
 							<td scope="row">{{ food.name }}</td>
@@ -27,7 +31,8 @@
 							</td>
 						</tr>
 						{% endfor %}
-				
+						
+						<!-- add additional costs manually -->
 						{% for cost in user.costs %}
 						<tr>
 							<td scope="row">{{ cost.name }}</td>

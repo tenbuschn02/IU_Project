@@ -1,5 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
+<!-- Calculation tool for food amount and costs -->
 <div class="container">
 	<div class="row">
 		<h1 align="center">Food Calculator</h1>
@@ -7,6 +8,7 @@
 	<div class="row mt-4">
 		<div class="col mx-2">
 			<div class=" header-part slidecontainer">
+				<!-- The share of the accepted invitations is needed to calulcate the needed amount -->
 				<h4>Accepted Invitations</h4>
 				<p>Expected share [%]</p>
 				<form method="POST">
@@ -20,6 +22,7 @@
 			<div class="header-part guest_overview">
 				<h4>Guests Overview</h4>
 				<div class="guest_count">
+					<!-- Overview of how many guests are expected to be there (accepted invitations + accepted share times pending invitations) -->
 					<table class="table">
 						<thead>
 							<tr>
@@ -48,6 +51,7 @@
 		<div class="col mx-2">
 			<div class="header-part food-overview">
 				<h4>Total Food Overview</h4>
+				<!-- Overview of total amount of food needed -->
 				<table class="table">
 					<thead>
 						<tr>
@@ -73,6 +77,7 @@
 		<div class="col">
 			<form method="POST">
 				<div class="Foodlist">
+					<!-- Possibility to add food -->
 					<table class="table" id="food-table">
 						<thead>
 							<tr>

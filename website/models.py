@@ -4,14 +4,14 @@ from sqlalchemy.sql import func
 from sqlalchemy import event
 
 
-
+# Onle for test purposes
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
+# All user specific classes (food, tables, guests,..) have a relationship with the user class. It's also used for the login
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     costs = db.relationship('Costs')
     #food_person = db.relationship('FoodPerson')
 
+# All available groups of guests (currently male, female and child), will be filled automatically after db is being created
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
@@ -37,7 +38,8 @@ def create_groups(*args, **kwargs):
         db.session.add(Group(name='Child'))
         db.session.commit()
 
-
+# Containing all guests, including the user id and a group.
+# Column invitation sent not used yet
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
@@ -48,6 +50,7 @@ class Guest(db.Model):
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'))
     table_id = db.Column(db.Integer, db.ForeignKey('table.id'))
 
+# Status of inviation (currently Open, Accepted, Delined, and Waiting), will be filled automatically after db is being created
 class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
@@ -60,12 +63,13 @@ def create_groups(*args, **kwargs):
         db.session.add(Status(name='Waiting'))
         db.session.commit()
 
-
+# Ratio with expected share of accepted invitations. Changed on food calculator page
 class AcceptedRatio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     ratio = db.Column(db.Float)
 
+# Containing all foods added by the user on the food calculator page
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -75,6 +79,7 @@ class Food(db.Model):
     amount_2 = db.Column(db.Float)
     amount_3 = db.Column(db.Float)
 
+# Containing tables for guest, maintained on table page
 class Table(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -82,6 +87,7 @@ class Table(db.Model):
     max_guests = db.Column(db.Integer)
     guest = db.relationship('Guest')
 
+# Containing all additional costs (food exluded)
 class Costs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
