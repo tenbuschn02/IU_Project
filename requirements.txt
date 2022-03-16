@@ -2,6 +2,5 @@ flask
 flask-login
 flask-sqlalchemy
 pandas
-json
 sys
 werkzeug
