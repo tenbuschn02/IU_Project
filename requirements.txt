@@ -1,7 +1,6 @@
 flask
 flask-login
 flask-sqlalchemy
-os
 pandas
 json
 sys
