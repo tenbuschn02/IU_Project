@@ -64,7 +64,7 @@
 						{% for food in user.food %}
 						<tr>
 							<td scope="row">{{ food.name }}</td>
-							<td>{{ food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3 }}</td>
+							<td>{{ "%.2f"|format(food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3) }}</td>
 							<td>{{ "€ %.2f"|format((food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3) * food.price) }}</td>
 						</tr>
 						{% endfor %}

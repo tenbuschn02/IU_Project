@@ -66,15 +66,7 @@ def guest_list():
                 file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], uploaded_file.filename)
                 uploaded_file.save(file_path)
 
-                
-                    # Read from csv
-                    # openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="ISO-8859-1")
-                
-                # ba = io.BytesIO()
-                # getfo(file_path, ba)
-                # ba.seek(0)
-                # f = io.TextIOWrapper(ba, encoding='cp1252')
-                # openCsv = pd.read_csv(f, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="cp1252")
+
                 try:
                     openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True, encoding="latin1")
                     acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True, encoding="latin1")
@@ -113,13 +105,17 @@ def guest_list():
                     print(message)
 
                 # All other execptions, most probably wrong column name 
-                except Exception as ex:
+                except ValueError as va:
                     flash('Wrong column names in uploaded file, please use the template', category='danger')
+                    template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                    message = template.format(type(va).__name__, va.args)
+                    print(message)
+
+                except Exception as ex:
+                    flash('An error occurred', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(ex).__name__, ex.args)
                     print(message)
-                    flash(message, category='danger')
-                    logging.info(message)
 
                 else:
 

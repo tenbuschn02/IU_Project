@@ -44,16 +44,17 @@
 
                     <div class="col">
                         <div class="row">
-                            <button type="button btn btn-primary" class="delete hover btn btn-primary" onClick="deleteAllGuests()">
+                            <button type="button btn btn-primary" class="hover btn btn-primary" onClick="deleteAllGuests()">
                                 <span aria-hidden="true">Delete All</span>
                             </button>
                         </div>
                         <div class="row">
-                            <form action="/get-template" method="POST"></form>
-                                <button onClick="getTemplate()" class="hover btn btn-primary">Get CSV</button>
+                            <form action="/get-template" method="POST" style="width: 100%; padding: 0;">
+                                <button onClick="getTemplate()" class="get-csv hover btn btn-primary">Get CSV</button>
                             </form>
                         </div>
                     </div>
+
 
                     <div class="col">
                         <form method="POST" action="" enctype="multipart/form-data" name="upload_csv" style="height: 100%;">

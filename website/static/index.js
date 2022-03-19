@@ -96,8 +96,6 @@ function closeMessage(flash) {
 }
 
 function getTemplate() {
-
     $form.submit();
-
 }
 
