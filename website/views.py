@@ -472,7 +472,7 @@ def delete_all():
 def get_template():
     print('get template')
     csv_dir  = "./static/files"
-    csv_file = "GuestListTemplate.csv"
+    csv_file = "Template.csv"
     csv_path = os.path.join(csv_dir, csv_file)
     send = send_file(csv_path, mimetype='text/csv', attachment_filename='GuestListTemplate.csv', as_attachment=True)
     print(send)
