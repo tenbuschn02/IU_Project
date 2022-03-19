@@ -67,7 +67,7 @@ def guest_list():
 
                 try:
                     # Read from csv
-                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True)
+                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="ISO-8859-1")
                     acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True)
                     declinedCsv = pd.read_csv(file_path, usecols = ['guestlist_declined', 'declined_group'], sep=None, skip_blank_lines=True)
                     waitingCsv = pd.read_csv(file_path, usecols = ['guestlist_waiting', 'waiting_group'], sep=None, skip_blank_lines=True)
