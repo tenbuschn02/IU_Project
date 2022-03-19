@@ -8,6 +8,7 @@ import pandas as pd
 import json
 import sys
 import logging
+import io
 
 views = Blueprint('views', __name__)
 
@@ -65,9 +66,17 @@ def guest_list():
                 file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], uploaded_file.filename)
                 uploaded_file.save(file_path)
 
-                try:
+                
                     # Read from csv
-                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="ISO-8859-1")
+                    # openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="ISO-8859-1")
+                
+                # ba = io.BytesIO()
+                # getfo(file_path, ba)
+                # ba.seek(0)
+                # f = io.TextIOWrapper(ba, encoding='cp1252')
+                # openCsv = pd.read_csv(f, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="cp1252")
+                try:
+                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="latin1")
                     acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True)
                     declinedCsv = pd.read_csv(file_path, usecols = ['guestlist_declined', 'declined_group'], sep=None, skip_blank_lines=True)
                     waitingCsv = pd.read_csv(file_path, usecols = ['guestlist_waiting', 'waiting_group'], sep=None, skip_blank_lines=True)
