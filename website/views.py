@@ -7,9 +7,15 @@ from flask import current_app, send_file
 import pandas as pd
 import json
 import sys
+import logging
 
 views = Blueprint('views', __name__)
 
+# Acquire the logger for a library (azure.mgmt.resource in this example)
+logger = logging.getLogger('azure.mgmt.resource')
+
+# Set the desired logging level
+logger.setLevel(logging.DEBUG)
 
 
 # Welcome page
@@ -103,6 +109,7 @@ def guest_list():
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(ex).__name__, ex.args)
                     print(message)
+
                 else:
 
                     # Rename the columns
