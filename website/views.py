@@ -76,10 +76,10 @@ def guest_list():
                 # f = io.TextIOWrapper(ba, encoding='cp1252')
                 # openCsv = pd.read_csv(f, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="cp1252")
                 try:
-                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True,  encoding="latin1")
-                    acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True)
-                    declinedCsv = pd.read_csv(file_path, usecols = ['guestlist_declined', 'declined_group'], sep=None, skip_blank_lines=True)
-                    waitingCsv = pd.read_csv(file_path, usecols = ['guestlist_waiting', 'waiting_group'], sep=None, skip_blank_lines=True)
+                    openCsv = pd.read_csv(file_path, usecols = ['guestlist_open', 'open_group'], sep=None, skip_blank_lines=True, encoding="latin1")
+                    acceptedCsv = pd.read_csv(file_path, usecols = ['guestlist_accepted', 'accepted_group'], sep=None, skip_blank_lines=True, encoding="latin1")
+                    declinedCsv = pd.read_csv(file_path, usecols = ['guestlist_declined', 'declined_group'], sep=None, skip_blank_lines=True, encoding="latin1")
+                    waitingCsv = pd.read_csv(file_path, usecols = ['guestlist_waiting', 'waiting_group'], sep=None, skip_blank_lines=True, encoding="latin1")
 
                     # Remove na
                     openCsv = openCsv[openCsv['guestlist_open'].notna()]
