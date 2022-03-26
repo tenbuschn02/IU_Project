@@ -1,8 +1,37 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <!-- Welcome page -->
-<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
+<h1 align="center">Home</h1>
+
+<div class="container">
+
+  <div class="col">
+
+    <div class="card">
+      <div class="card-body">
+        <h5>Welcome to Lauras and Nicos Wedding Planner</h5>
+        <p>The Website contains following pages:</p>
+        <ul class list-group>
+          <li>Guest List</li>
+          <li>Food Calculator</li>
+          <li>Table Overview</li>
+          <li>Finances</li>
+        </ul>
+        <p>All pages are directly or indirectly dependent on the guest list, so it makes sense to maintain this first.</p>
+        <p>Have fun :)</p>
+      </div>
+    
+
+    </div>
+
+
+  </div>
+
+</div>
+
+  
+<!-- For testing only, not used anymore-->
+<!-- <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}
   <li class="list-group-item">
     {{ note.data }}
@@ -18,5 +47,7 @@
   <div align="center">
     <button type="submit" class="btn btn-primary">Add Note</button>
   </div>
-</form>
+</form> -->
+
+
 {% endblock %}

@@ -27,13 +27,17 @@ body {
 
 
 .btn-primary:hover {
-  background-color: grey;
+  background-color: black;
+  color: white;
   cursor: pointer;
+  border-color: white;
 }
 
 .btn-secondary:hover {
-  background-color: grey;
+  background-color: black;
+  color: white;
   cursor: pointer;
+  border-color: white;
 }
 
 .get-csv {

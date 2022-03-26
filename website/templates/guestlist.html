@@ -8,7 +8,7 @@
         
         <!-- Add a new guest to a group -->
         <div class="col">
-            <p>Add New Guest</p>
+            <p><b>Add New Guest</b></p>
             <form method="POST">
                 <div class="row">
                     <div class="col-8">
@@ -26,9 +26,9 @@
 
                     <p style="width: 20%;">Add to:</p>
 
-                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest" style="width: 40%;">Guestlist</button>
+                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest" style="width: 40%;">Guest List</button>
 
-                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest_waiting" style="width: 40%;">Waitinglist</button>
+                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest_waiting" style="width: 40%;">Waiting List</button>
 
                 </div>
             </form>
@@ -38,7 +38,13 @@
             <!-- Possibility to mass edit the guest list (delete all, download csv template, upload guest list as csv) -->
             <div class="col-8">
                 <div class="row">
-                    <p>Mass Edit</p>
+                    <p><b>
+                        Mass Edit 
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="1. Download CSV Template with GET CSV, 2. Select File, 3. Upload CSV">
+                        &#9432;
+                        </span>
+                    </b></p>
+                    
                 </div>
                 <div class="row">
 
@@ -76,7 +82,7 @@
 
     <!-- collapsable waiting list -->
     <div class="card mt-5  pb-2">
-        <p class="m-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Waiting ({{rowsWait}})</p>
+        <p class="m-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><b>Waiting ({{rowsWait}})</b></p>
 
         <div class="collapse" id="collapseExample">
             <div class="card-body">
@@ -87,13 +93,13 @@
                         <span class="flex-row"> {{ guest.name }} </span>
                         <div class="flex-row-reverse">
                             <span class="flex-row-reverse">
-                                <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Pending" class="btn btn-secondary hover"
+                                <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending" class="btn btn-secondary hover"
                                     onClick="guestChange({{ guest.id }}, 1)">
                                     <span aria-hidden="true">&#63;</span>
                                 </button>
                             </span>
                             <span class="flex-row-reverse">
-                                <button type="button" class="delete btn btn-secondary px-1 py-1" title="Delete"
+                                <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
                                     onClick="guestDelete({{ guest.id }})">
                                     <span aria-hidden="true">&#128465;</span>
                                 </button>
@@ -111,26 +117,26 @@
     <div class="row mt-5 d-flex justify-content-between pb-2">
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
             <!-- List of Guests with pending invitations -->
-            <p class="m-2">Pending ({{rowsOpen}})</p>
+            <p class="m-2"><b>Pending ({{rowsOpen}})</b></p>
             <ul class="list-group">
                 {% for guest in guestsOpen %}
                 <li class="list-group-item d-flex justify-content-between align-items-center"> 
                     <span class="flex-row"> {{ guest.name }} </span>
                     <div class="flex-row-reverse">
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Accepted"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Accepted"
                                 onClick="guestChange({{ guest.id }}, 2)">
                                 <span aria-hidden="true">&#10003;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Declined"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Declined"
                                 onClick="guestChange({{ guest.id }}, 3)">
                                 <span aria-hidden="true">&#10007;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="delete btn btn-secondary px-1 py-1" title="Delete"
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
                                 onClick="guestDelete({{ guest.id }})">
                                 <span aria-hidden="true">&#128465;</span>
                             </button>
@@ -143,26 +149,26 @@
 
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
             <!-- List of Guests with accepted invitations -->
-            <p class="m-2">Accepted ({{rowsAcc}})</p>
+            <p class="m-2"><b>Accepted ({{rowsAcc}})</b></p>
             <ul class="list-group">
                 {% for guest in guestsAccepted %}
                 <li class="list-group-item d-flex justify-content-between align-items-center"> 
                     <span class="flex-row"> {{ guest.name }} </span>
                     <div class="flex-row-reverse">
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Pending"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending"
                                 onClick="guestChange({{ guest.id }}, 1)">
                                 <span aria-hidden="true">&#63;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Declined"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Declined"
                                 onClick="guestChange({{ guest.id }}, 3)">
                                 <span aria-hidden="true">&#10007;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="delete btn btn-secondary px-1 py-1" title="Delete"
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
                                 onClick="guestDelete({{ guest.id }})">
                                 <span aria-hidden="true">&#128465;</span>
                             </button>
@@ -175,26 +181,26 @@
 
         <div class="col card pb-2 mx-1" style="min-width: 375px;">
             <!-- List of Guests with declined invitations -->
-            <p class="m-2">Declined ({{rowsDec}})</p>
+            <p class="m-2"><b>Declined ({{rowsDec}})</b></p>
             <ul class="list-group">
                 {% for guest in guestsDeclined %}
                 <li class="list-group-item d-flex justify-content-between align-items-center"> 
                     <span class="flex-row"> {{ guest.name }} </span>
                     <div class="flex-row-reverse">
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Pending"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending"
                                 onClick="guestChange({{ guest.id }}, 1)">
                                 <span aria-hidden="true">&#63;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="change-status btn btn-secondary px-1 py-1" title="Accepted"
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Accepted"
                                 onClick="guestChange({{ guest.id }}, 2)">
                                 <span aria-hidden="true">&#10003;</span>
                             </button>
                         </span>
                         <span class="flex-row-reverse">
-                            <button type="button" class="delete btn btn-secondary px-1 py-1" title="Delete"
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
                                 onClick="guestDelete({{ guest.id }})">
                                 <span aria-hidden="true">&#128465;</span>
                             </button>

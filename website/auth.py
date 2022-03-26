@@ -25,7 +25,7 @@ def login():
             else:
                 flash('Email does not exist', category='danger')
         elif mode == 'signup':
-            pass
+            return redirect(url_for('auth.sign_up'))
 
                 
     return render_template("login.html", user=current_user)
