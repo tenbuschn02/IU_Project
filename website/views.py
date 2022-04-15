@@ -42,8 +42,6 @@ def home():
 @views.route('/guest-list', methods=['GET', 'POST'])
 @login_required
 def guest_list():
-
-    #print(db.metadata.tables.keys())
     
     groupsList = Group.query.all()
     
@@ -102,23 +100,19 @@ def guest_list():
                     flash('Group Ids in uploaded file must be either 1 (male), 2 (female) or 3 (child)', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(te).__name__, te.args)
-                    print(message)
 
-                # All other execptions, most probably wrong column name 
+                # Wrong column name 
                 except ValueError as va:
                     flash('Wrong column names in uploaded file, please use the template', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(va).__name__, va.args)
-                    print(message)
 
                 except Exception as ex:
                     flash('An error occurred', category='danger')
                     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                     message = template.format(type(ex).__name__, ex.args)
-                    print(message)
 
                 else:
-
                     # Rename the columns
                     openCsv.rename(columns={'guestlist_open': 'name', 'open_group': 'group_id'}, inplace=True)
                     acceptedCsv.rename(columns={'guestlist_accepted': 'name', 'accepted_group': 'group_id'}, inplace=True)
@@ -236,11 +230,9 @@ def foodcalc():
                 if mode == 'add_food':
                     new_food = Food(name=food_name, user_id=current_user.id, price=food_price, amount_1=amount_1, amount_2=amount_2, amount_3=amount_3)
                 else:
-                    print()
-                db.session.add(new_food)
-                db.session.commit()
-                flash('Food added!', category='success')
-            print('food added')
+                    db.session.add(new_food)
+                    db.session.commit()
+                    flash('Food added!', category='success')
 
     # get amount of guests per group to show on website and use for calculation for expected amount of needed food
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
@@ -286,10 +278,6 @@ def table_overview():
                 max_guests = db.session.query(Table.max_guests).filter_by(id=selected_table).scalar()
                 db.session.commit()
 
-                print('-------')
-                print(guestAmount)
-                print(max_guests)
-                print('-------')
                 if guestAmount < max_guests:
                     db.session.query(Guest).filter_by(user_id=current_user.id, id=guest).update({"table_id": selected_table})
                     db.session.commit()
@@ -345,7 +333,6 @@ def finances():
                 db.session.add(new_cost)
                 db.session.commit()
                 flash('Cost added!', category='success')
-            print('cost added')
 
     # Get amount of guests per group to display on website and to calculate the costs
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
@@ -470,11 +457,9 @@ def delete_all():
 @views.route('/get-template', methods=['GET','POST'])
 @login_required
 def get_template():
-    print('get template')
     csv_dir  = "./static/files"
     csv_file = "Template.csv"
     csv_path = os.path.join(csv_dir, csv_file)
     send = send_file(csv_path, mimetype='text/csv', attachment_filename='GuestListTemplate.csv', as_attachment=True)
-    print(send)
     return send
 
