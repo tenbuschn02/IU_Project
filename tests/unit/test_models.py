@@ -2,11 +2,10 @@ from website.models import User, Note, Guest, Food, AcceptedRatio, Table, Costs
 #create groupes and create status is only tested when creating a new database
 
 def test_new_user():
-    
     """
     GIVEN a User model
     WHEN a new User is created
-    THEN check the email and the password are defined correctly
+    THEN check the email, password and first_name are defined correctly
     """
     new_user = User(email='test@web.de', first_name='first_name', password='password')
     assert new_user.email == 'test@web.de'
@@ -14,7 +13,6 @@ def test_new_user():
     assert new_user.first_name == 'first_name'
 
 def test_new_note():
- 
     """
     GIVEN a Note model
     WHEN a new Note is added for user 123

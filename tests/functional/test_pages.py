@@ -1,63 +1,74 @@
 from tests.conftest import force_login
 
-#access should be denied without login --> redirect to login page
-def test_home_withoutlogin(client):
+#access to login and sign-up page should work without logged in user
+def test_login_without_login(client):
+    """
+    GIVEN a Flask application
+    WHEN the /login page is requested without login
+    THEN check that a '200' status code is returned and the correct template is returned
+    """
+    response = client.get('/login')
+    assert response.status_code == 200
+    assert b'<h2 align="center">Login</h2>' in response.data
 
+def test_signup_without_login(client):
+    """
+    GIVEN a Flask application
+    WHEN the /sign-up page is requested without login
+    THEN check that a '200' status code is returned and the correct template is returned
+    """
+    response = client.get('/sign-up')
+    assert response.status_code == 200
+    assert b'<h2 align="center"> Sign Up</h2>' in response.data
+
+#access should be denied without login --> redirect to login page
+def test_home_without_login(client):
     """
     GIVEN a Flask application
     WHEN the / page is requested without login
     THEN check that a '302' status code is returned and it redirects to the login page
     """
-
     response = client.get('/')
     assert response.status_code == 302
     assert b'href="/login' in response.data
 
 
-def test_foodcalc_withoutlogin(client):
-
+def test_foodcalc_without_login(client):
     """
     GIVEN a Flask application
     WHEN the /foodcalc page is requested without login
     THEN check that a '302' status code is returned and it redirects to the login page
     """
-
     response = client.get('/foodcalc')
     assert response.status_code == 302
     assert b'href="/login' in response.data
 
-def test_finances_withoutlogin(client):
-
+def test_finances_without_login(client):
     """
     GIVEN a Flask application
     WHEN the /finances page is requested without login
     THEN check that a '302' status code is returned and it redirects to the login page
     """
-
     response = client.get('/finances')
     assert response.status_code == 302
     assert b'href="/login' in response.data
 
 def test_guestlist_withoutlogin(client):
-
     """
     GIVEN a Flask application
     WHEN the /guest-list page is requested without login
     THEN check that a '302' status code is returned and it redirects to the login page
     """
-
     response = client.get('/guest-list')
     assert response.status_code == 302
     assert b'href="/login' in response.data
 
 def test_table_without_login(client):
-
     """
     GIVEN a Flask application
     WHEN the /table-overview page is requested without login
     THEN check that a '302' status code is returned and it redirects to the login page
     """
-
     response = client.get('/table-overview')
     assert response.status_code == 302
     assert b'href="/login' in response.data
