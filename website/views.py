@@ -261,7 +261,9 @@ def table_overview():
             table_name = request.form.get('table_name')
             max_guests = request.form.get('max_guests', type=int)
 
-            if max_guests < 1:
+            if not max_guests:
+                flash('Please define max amount of guests', category='danger') 
+            elif max_guests < 1:
                 flash('Minimum quantity of 1 required', category='danger')
             elif len(table_name) < 1:
                 flash('Please enter a table name', category='danger')
