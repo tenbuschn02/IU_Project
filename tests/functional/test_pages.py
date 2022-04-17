@@ -1,6 +1,6 @@
 from tests.conftest import force_login
 
-#access denied without login
+#access should be denied without login --> redirect to login page
 def test_home_withoutlogin(client):
 
     """
@@ -12,6 +12,7 @@ def test_home_withoutlogin(client):
     response = client.get('/')
     assert response.status_code == 302
     assert b'href="/login' in response.data
+
 
 def test_foodcalc_withoutlogin(client):
 
@@ -62,7 +63,7 @@ def test_table_without_login(client):
     assert b'href="/login' in response.data
 
 
-#with login
+#access possible with login
 
 @force_login(user_id=1)
 def test_home_with_login(client):

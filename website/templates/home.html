@@ -28,9 +28,10 @@
         <ul class="list-group list-group-flush" id="notes">
           {% for note in user.notes %}
           <li class="list-group-item">
-            {{ note.data }}
-            <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-              <span aria-hidden="true">&times;</span>
+            <div class="d-flex align-items-center justify-content-between">
+              {{ note.data }}
+              <button type="button" class="btn-close" onClick="deleteNote({{ note.id }})">
+            </div>
             </button>
           </li>
           {% endfor %}
