@@ -4,4 +4,3 @@ flask-sqlalchemy
 pandas
 werkzeug
 waitress
-logging
