@@ -5,6 +5,6 @@ import logging
 app = create_app()
 
 if __name__ == '__main__':
-    # app.run(debug=False)
-    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
+    #app.run(debug=True)
+    #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
     serve(app)

@@ -196,7 +196,6 @@ def foodcalc():
 
     if request.method == 'POST':
         mode = request.form['submit']
-
         if mode == 'submit_ratio':
             # Addapt the expected share of accepted invitations
             ratio = request.form.get('ratio', type=int)
@@ -211,28 +210,28 @@ def foodcalc():
         elif mode == 'add_food':
             # Add new food to the food list
             food_name = request.form.get('food_name')
-            food_price = request.form.get('food_price')
-            amount_1 = request.form.get('amount_1')
-            amount_2 = request.form.get('amount_2')
-            amount_3 = request.form.get('amount_3')
+            food_price = request.form.get('food_price', type=int)
+            amount_1 = request.form.get('amount_1', type=int)
+            amount_2 = request.form.get('amount_2', type=int)
+            amount_3 = request.form.get('amount_3', type=int)
 
             if len(food_name) < 1:
                 flash('Pleace enter a name!', category='danger')
-            elif len(food_price) < 1:
+            elif not food_price:
                 flash('Pleace enter a price!', category='danger')
-            elif len(amount_1) < 1:
+            elif not amount_1:
                 flash('Pleace enter an estimated amount for men!', category='danger')
-            elif len(amount_2) < 1:
+            elif not amount_2:
                 flash('Pleace enter an estimated amount for women!', category='danger')
-            elif len(amount_3) < 1:
-                flash('Pleace enter an estimated amount for children!', category='danger')          
+            elif not amount_3:
+                flash('Pleace enter an estimated amount for children!', category='danger')
+            elif food_price < 0 or amount_1 < 0 or amount_2 < 0 or amount_3 < 0:
+                flash('Pleace enter only positive numbers for price and amounts', category='danger')
             else:
-                if mode == 'add_food':
-                    new_food = Food(name=food_name, user_id=current_user.id, price=food_price, amount_1=amount_1, amount_2=amount_2, amount_3=amount_3)
-                else:
-                    db.session.add(new_food)
-                    db.session.commit()
-                    flash('Food added!', category='success')
+                new_food = Food(name=food_name, user_id=current_user.id, price=food_price, amount_1=amount_1, amount_2=amount_2, amount_3=amount_3)
+                db.session.add(new_food)
+                db.session.commit()
+                flash('Food added!', category='success')
 
     # get amount of guests per group to show on website and use for calculation for expected amount of needed food
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
