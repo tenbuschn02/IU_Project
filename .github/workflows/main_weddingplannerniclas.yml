@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'WeddingPlannerNiclas'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_732D0DEB6F1C46C28D6BC7280C5D8F2A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85B45BD58BF84CE09B63B6F510D46FFE }}
