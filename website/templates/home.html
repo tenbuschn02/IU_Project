@@ -1,21 +1,63 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-<form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
+<!-- Welcome page -->
+<h1 align="center">Home</h1>
+
+<div class="container">
+
+  <div class="col">
+
+    <div class="card">
+      <div class="card-body">
+        <h5>Welcome to Lauras and Nicos Wedding Planner</h5>
+        <p>The Website contains following pages:</p>
+        <ul class list-group>
+          <li>Guest List</li>
+          <li>Food Calculator</li>
+          <li>Table Overview</li>
+          <li>Finances</li>
+        </ul>
+        <p>All pages are directly or indirectly dependent on the guest list, so it makes sense to maintain this first.</p>
+        <p>Have fun :)</p>
+      </div>
+    </div>
+
+    <div class="card mt-2">
+      <div class="card-body">
+        <h5>Here is some space for your personal notes</h5>
+        <ul class="list-group list-group-flush" id="notes">
+          {% for note in user.notes %}
+          <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+              {{ note.data }}
+              <button type="button" class="btn-close" onClick="deleteNote({{ note.id }})">
+            </div>
+            </button>
+          </li>
+          {% endfor %}
+        </ul>
+        <form method="POST">
+          <textarea name="note" id="note" class="form-control"></textarea>
+          <br />
+          <div align="center">
+            <button type="submit" class="btn btn-primary">Add Note</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    
+
+
+
+
   </div>
-</form>
+
+</div>
+
+  
+<!-- For testing only, not used anymore-->
+
+
+
 {% endblock %}

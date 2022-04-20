@@ -1,141 +1,219 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
-<h1 align="center">Guest List</h1>
 
-<div class="add_guests">
-    <form method="POST">
+<!-- Maintaining the guest list. Containing four lists of guests related to the status of their invitation (Waiting list, Pending, accepted, declined) -->
+<div class="container">
+    <div class="row"><h1 align="center">Guest List</h1></div>
+    <div class="row d-flex justify-content-between align-items-center">
+        
+        <!-- Add a new guest to a group -->
+        <div class="col">
+            <p><b>Add New Guest</b></p>
+            <form method="POST">
+                <div class="row">
+                    <div class="col-8">
+                        <input name="guest" id="guest" class="form-control" placeholder="Guest Name"></input>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end">
+                        <select name="group" id="group" class="form-select">
+                            {% for g in groupsList %}
+                                <option value={{g.id}}>{{g.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-start align-items-center mt-2">
 
-        <div align="center">
-            <input name="guest" id="guest" class="form-control"></input>
-            <br />
-            <button type="submit" class="btn btn-primary" name="submit" value="add_guest">Guestlist</button>
-            <button type="submit" class="btn btn-primary" name="submit" value="add_guest_waiting">Waitinglist</button>
+                    <p style="width: 20%;">Add to:</p>
+
+                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest" style="width: 40%;">Guest List</button>
+
+                    <button type="submit" class="btn btn-primary add-button hover" name="submit" value="add_guest_waiting" style="width: 40%;">Waiting List</button>
+
+                </div>
+            </form>
         </div>
-    </form>
+
+        <div class="col d-flex justify-content-center">
+            <!-- Possibility to mass edit the guest list (delete all, download csv template, upload guest list as csv) -->
+            <div class="col-8">
+                <div class="row">
+                    <p><b>
+                        Mass Edit 
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="1. Download CSV Template with GET CSV, 2. Select File, 3. Upload CSV">
+                        &#9432;
+                        </span>
+                    </b></p>
+                    
+                </div>
+                <div class="row">
+
+                    <div class="col">
+                        <div class="row">
+                            <button type="button btn btn-primary" class="hover btn btn-primary" onClick="deleteAllGuests()">
+                                <span aria-hidden="true">Delete All</span>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <form action="/get-template" method="POST" style="width: 100%; padding: 0;">
+                                <button onClick="getTemplate()" class="get-csv hover btn btn-primary">Get CSV</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+                        <form method="POST" action="" enctype="multipart/form-data" name="upload_csv" style="height: 100%;">
+
+                            <div class="row"  style="height: 50%;">
+                                <input type="file" name="file" style="display: none" id="select-file">
+                                <label for="select-file" class="select-file hover btn btn-primary">Select File</label>
+                            </div>
+                            <div class="row">
+                                <input type="submit" name="submit" value="Upload CSV" style="height: 50%;" class="hover btn btn-primary">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- collapsable waiting list -->
+    <div class="card mt-5  pb-2">
+        <p class="m-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><b>Waiting ({{rowsWait}})</b></p>
+
+        <div class="collapse" id="collapseExample">
+            <div class="card-body">
+                <!-- <p>Waiting ({{rowsWait}})</p> -->
+                <ul class="list-group">
+                    {% for guest in guestsWaiting %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center"> 
+                        <span class="flex-row"> {{ guest.name }} </span>
+                        <div class="flex-row-reverse">
+                            <span class="flex-row-reverse">
+                                <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending" class="btn btn-secondary hover"
+                                    onClick="guestChange({{ guest.id }}, 1)">
+                                    <span aria-hidden="true">&#63;</span>
+                                </button>
+                            </span>
+                            <span class="flex-row-reverse">
+                                <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
+                                    onClick="guestDelete({{ guest.id }})">
+                                    <span aria-hidden="true">&#128465;</span>
+                                </button>
+                            </span>
+                        </div>
+                    </li>
+                    {% endfor %} 
+                </ul>  
+            </div>
+        </div>
+    </div>
+
     
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p><input type="file" name="file"></p>
-        <p><input type="submit" name="submit" value="upload_csv"></p>
-    </form>
+    
+    <div class="row mt-5 d-flex justify-content-between pb-2">
+        <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with pending invitations -->
+            <p class="m-2"><b>Pending ({{rowsOpen}})</b></p>
+            <ul class="list-group">
+                {% for guest in guestsOpen %}
+                <li class="list-group-item d-flex justify-content-between align-items-center"> 
+                    <span class="flex-row"> {{ guest.name }} </span>
+                    <div class="flex-row-reverse">
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Accepted"
+                                onClick="guestChange({{ guest.id }}, 2)">
+                                <span aria-hidden="true">&#10003;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Declined"
+                                onClick="guestChange({{ guest.id }}, 3)">
+                                <span aria-hidden="true">&#10007;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
+                                onClick="guestDelete({{ guest.id }})">
+                                <span aria-hidden="true">&#128465;</span>
+                            </button>
+                        </span>
+                    </div>
+                </li>
+                {% endfor %} 
+            </ul>  
+        </div>
+
+        <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with accepted invitations -->
+            <p class="m-2"><b>Accepted ({{rowsAcc}})</b></p>
+            <ul class="list-group">
+                {% for guest in guestsAccepted %}
+                <li class="list-group-item d-flex justify-content-between align-items-center"> 
+                    <span class="flex-row"> {{ guest.name }} </span>
+                    <div class="flex-row-reverse">
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending"
+                                onClick="guestChange({{ guest.id }}, 1)">
+                                <span aria-hidden="true">&#63;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Declined"
+                                onClick="guestChange({{ guest.id }}, 3)">
+                                <span aria-hidden="true">&#10007;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
+                                onClick="guestDelete({{ guest.id }})">
+                                <span aria-hidden="true">&#128465;</span>
+                            </button>
+                        </span>
+                    </div>
+                </li>
+                {% endfor %} 
+            </ul>  
+        </div>
+
+        <div class="col card pb-2 mx-1" style="min-width: 375px;">
+            <!-- List of Guests with declined invitations -->
+            <p class="m-2"><b>Declined ({{rowsDec}})</b></p>
+            <ul class="list-group">
+                {% for guest in guestsDeclined %}
+                <li class="list-group-item d-flex justify-content-between align-items-center"> 
+                    <span class="flex-row"> {{ guest.name }} </span>
+                    <div class="flex-row-reverse">
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Pending"
+                                onClick="guestChange({{ guest.id }}, 1)">
+                                <span aria-hidden="true">&#63;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="change-status btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Accepted"
+                                onClick="guestChange({{ guest.id }}, 2)">
+                                <span aria-hidden="true">&#10003;</span>
+                            </button>
+                        </span>
+                        <span class="flex-row-reverse">
+                            <button type="button" class="delete btn btn-secondary px-1 py-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
+                                onClick="guestDelete({{ guest.id }})">
+                                <span aria-hidden="true">&#128465;</span>
+                            </button>
+                        </span>
+                    </div>
+                </li>
+                {% endfor %} 
+            </ul>  
+        </div>
+    </div>
 </div>
 
 
-
-<section class="flex-layout">
-    <div class="flex-parent">
-        <div class=card>
-            <p align="center">Pending ({{rowsOpen}})</p>
-            <ul class="guestList" id="guestlistOpen">
-                {% for guest in user.guestsOp %}
-                <li class="list-open">
-                    <div class="float-left">
-                        {{ guest.name }}
-                    </div>
-
-                    <div class="float-right">
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistAccepted')">
-                            <span aria-hidden="true">Accepted</span>
-                        </button>
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistOpen', 'GuestlistDeclined')">
-                            <span aria-hidden="true">Declined</span>
-                        </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistOpen')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class=card>
-            <p align="center">Accepted ({{rowsAcc}})</p>
-            <ul class="guestList" id="guestlistAccepted">
-                {% for guest in user.guestsAcc %}
-                <li class="list-open">
-                    <div class="float-left">
-                        {{ guest.name }}
-                    </div>
-
-                    <div class="float-right">
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistOpen')">
-                            <span aria-hidden="true">Pending</span>
-                        </button>
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistAccepted', 'GuestlistDeclined')">
-                            <span aria-hidden="true">Declined</span>
-                        </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistAccepted')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class=card>
-            <p align="center">Declined ({{rowsDec}})</p>
-            <ul class="guestList" id="guestlistDeclined">
-                {% for guest in user.guestsDec %}
-                <li class="list-open">
-                    <div class="float-left">
-                        {{ guest.name }}
-                    </div>
-
-                    <div class="float-right">
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistOpen')">
-                            <span aria-hidden="true">Pending</span>
-                        </button>
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistDeclined', 'GuestlistAccepted')">
-                            <span aria-hidden="true">Accepted</span>
-                        </button>
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistDeclined')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class=card>
-            <p align="center">Waiting ({{rowsWait}})</p>
-            <ul class="guestList" id="guestlistWaiting">
-                {% for guest in user.guestsWait %}
-                <li class="list-open">
-                    <div class="float-left">
-                        {{ guest.name }}
-                    </div>
-
-                    <div class="float-right">
-                        <button type="button" class="change"
-                            onClick="guestChange({{ guest.id }}, 'GuestlistWaiting', 'GuestlistOpen')">
-                            <span aria-hidden="true">Open</span>
-                        </button>
-
-                        <button type="button" class="close" onClick="guestDelete({{ guest.id }}, 'GuestlistWaiting')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-    </div>
-
-</section>
 
 
 

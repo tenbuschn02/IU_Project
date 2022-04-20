@@ -1,0 +1,135 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+<!-- Maintaining a list of tables. Uses guest list to assign guest to a table -->
+<div class="container">
+    <form method="POST">
+        <div class="row">
+            <h1 align="center">Table Overview</h1>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="Guestlist">
+                    <!-- Shows all possible guests (pending or accepted invitations) -->
+                    <p align="center">Guests</p>
+                        <ul class="list-group" id="guestOpenAndAcc">
+                            <div class="card">
+                                <p align="center" class="mt-2">Accepted ({{ rowsAcc }})</p>
+                                {% for guest in guestsAccepted %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span class="flew-row">
+                                        {{ guest.name }}
+                                    </span>
+                    
+                                    <span class="rlex-row-reverse">
+                                        <input type="checkbox" id="selected_acc" name="selected" value={{ guest.id }}>
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </div>
+                            <div class="card mt-3">
+                                <p align="center" class="mt-2">Pending ({{ rowsOpen }})</p>
+                                {% for guest in guestsOpen %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span class="flew-row">
+                                        {{ guest.name }}
+                                    </span>
+                    
+                                    <span class="flex-row-reverse">
+                                        <!-- {{ guest.table_id }} -->
+                                        <input type="checkbox" id="selected_op" name="selected" value={{ guest.id }}>
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </div>  
+                        </ul>                    
+                </div>
+            </div>
+
+            <div class="col-9">
+                
+                <div class="row">
+                    <div class="col-8">
+                        <!-- Possibility to create a table with dedecated amount of people -->
+                        <p align="center">Add Table</p>
+                        <div class="add_table">
+                            <div class="row">
+                                <div class="col">
+                                    <input name="table_name" id="table_name" class="form-control" placeholder="Table Name"></input>
+                                </div>
+                                <div class="col">
+                                    <input name="max_guests" id="max_guests" type="number" class="input-number form-control" placeholder="Max Guest Amount"></input>
+                                </div>
+                            </div>
+
+                            <button type="submit" name="submit" class="add_table_value btn btn-primary mt-1" value="add_table">Add Table</button>
+
+                            
+                            
+                        </div>   
+                    </div>
+                    <div class="col-4">
+                        <!-- Assign all selected guests to chosen table -->
+                        <p align="center">Assign Table</p>
+                        <div class="assign_table">
+                            <select name="tables" id="tables" class="form-select">
+                                {% for t in tableList %}
+                                    <option name="selected_table" value={{t.id}}>{{t.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" name="submit" class="add_table_value btn btn-primary mt-1" value="assign_table">Assign</button>
+                            <button type="submit" name="submit" class="add_table_value btn btn-primary mt-1" value="unassign">Unassign</button>
+                        </div> 
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+
+                <!-- Show all tables including the guests assigned to the tables -->
+                {% for table in user.table %}
+                <div class="col-sm card mx-1 py-2" style="min-width: 200px;">
+
+                    <div class="row align-items-start">
+                        <p align="center">
+                            {{ table.name }} ({{ table.max_guests }})
+                        </p>
+                        <ul class="list-group m-2" id="{{ table.id }}">
+        
+                            {% for guest in table.guest %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="flew-row">
+                                    {{ guest.name }}
+                                </span>
+        
+                                <span class="flew-row-reverse">
+                                    <!-- {{ guest.table_id }} -->
+                                    <input type="checkbox" id="selected_op  " name="selected" value={{ guest.id }}>
+                                </span>
+                            </li>   
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="row d-flex align-items-end px-2" style="height: 100%;">
+                        <button type="button" class="delete btn btn-secondary mt-2" onClick="deleteTable({{ table.id }})">
+                            <span aria-hidden="true">Delete Table</span>
+                        </button> 
+                    </div>
+
+                </div>
+
+                {% endfor %} 
+                 
+                </div>
+            
+            </div>
+        </div>
+        
+        
+    </form>
+
+</div>
+
+
+
+
+{% endblock %}

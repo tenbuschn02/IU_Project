@@ -1,12 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 :root {
-  --primary-color: #007AF3;
+  --primary-color: #f58d42;
 }
 
 body {
   background: #F2F2F2;
   margin: 0;
   font-family: "Poppins";
+  color: black;
 }
 
 .navbar {
@@ -78,7 +79,7 @@ nav a:hover {
   padding: 0.5em 0 0.5em 1.5em;
 }
 
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 850px) {
   .mobile-menu,
 .mobile-menu-exit {
     display: none;
@@ -138,25 +139,7 @@ nav a:hover {
 }
 .form-group .btn-primary {
   background-color: var(--primary-color);
-  color: white;
-  font-weight: bold;
-  font-size: 1em;
-  border: none;
-  margin-bottom: 5em;
-  border-radius: 0.5em;
-  display: inline-block;
-  padding: 0.8em 2em;
-  width: unset;
-  cursor: pointer;
-  margin-left: 3em;
-}
-.form-group .btn-primary:hover {
-  color: white;
-  background: grey;
-}
-.form-group .btn-primary {
-  background-color: var(--primary-color);
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 1em;
   border: none;
@@ -175,7 +158,7 @@ nav a:hover {
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 1em;
   border: none;
@@ -189,6 +172,15 @@ nav a:hover {
 .btn-primary:hover {
   color: white;
   background: grey;
+}
+
+.add-button {
+  margin-top: 1em;
+  color: black;
+}
+
+.upload_csv {
+  margin-left: 2em;
 }
 
 .flex-layout .flex-parent {
@@ -234,6 +226,46 @@ nav a:hover {
   font-weight: bold;
 }
 
-.form-control {
-  margin-bottom: 2em;
+.slidecontainer {
+  width: 15%;
+}
+.slidecontainer p {
+  font-size: 12pt;
+}
+.slidecontainer .slider {
+  width: 80%;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 80%;
+}
+.header .header-part {
+  width: 25%;
+  text-align: center;
+}
+.header .slidecontainer .submit_ratio {
+  margin: 0 auto;
+}
+.header table {
+  width: 100%;
+}
+.header table td {
+  text-align: center;
+}
+
+.Foodlist {
+  margin-top: 5em;
+}
+.Foodlist table {
+  margin: 0 auto;
+}
+.Foodlist table td {
+  text-align: center;
+}
+.Foodlist table td button {
+  width: 100%;
 }/*# sourceMappingURL=main.css.map */

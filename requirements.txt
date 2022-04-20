@@ -1,3 +1,6 @@
 flask
 flask-login
 flask-sqlalchemy
+pandas
+werkzeug
+waitress

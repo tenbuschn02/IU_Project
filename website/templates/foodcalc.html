@@ -1,9 +1,129 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 
-<h1 align="center">Food Calculator</h1>
-
-
-
+<!-- Calculation tool for food amount and costs -->
+<div class="container">
+	<div class="row">
+		<h1 align="center">Food Calculator</h1>
+	</div>
+	<div class="row mt-4">
+		<div class="col mx-2">
+			<div class=" header-part slidecontainer">
+				<!-- The share of the accepted invitations is needed to calulcate the needed amount -->
+				<h4>Accepted Invitations</h4>
+				<p>Expected share [%]
+					<span data-bs-toggle="tooltip" data-bs-placement="top" title="In calculation considered amount of people = #accepted + expected share x #pending">
+                        &#9432;
+                        </span>
+				</p>
+				<form method="POST">
+					<input name="ratio" type="range" class="slider" style="width: 80%;" value={{ratio}} min="1" max="100" oninput="this.nextElementSibling.value = this.value">
+					<output>{{ ratio }}</output>
+					<button type="submit" class="submit_ratio btn btn-primary" name="submit" value="submit_ratio">Save</button>
+				</form>
+			</div>
+		</div>
+		<div class="col mx-2">
+			<div class="header-part guest_overview">
+				<h4>Guests Overview</h4>
+				<div class="guest_count">
+					<!-- Overview of how many guests are expected to be there (accepted invitations + accepted share times pending invitations) -->
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Group</th>
+								<th scope="col">Count</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td scope="row">Men</td>
+								<td>{{ male_guests }}</td>
+							</tr>
+							<tr>
+								<td scope="row">Women</td>
+								<td>{{ female_guests }}</td>
+							</tr>
+							<tr>
+								<td scope="row">Children</td>
+								<td>{{ child_guests }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col mx-2">
+			<div class="header-part food-overview">
+				<h4>Total Food Overview</h4>
+				<!-- Overview of total amount of food needed -->
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Amount</th>
+							<th scope="col">Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for food in user.food %}
+						<tr>
+							<td scope="row">{{ food.name }}</td>
+							<td>{{ "%.2f"|format(food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3) }}</td>
+							<td>{{ "€ %.2f"|format((food.amount_1 * male_guests + food.amount_2 * female_guests + food.amount_3 * food.amount_3) * food.price) }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-4">
+		<div class="col">
+			<form method="POST">
+				<h4>Add some food/ drinks and the expected amount per group here:</h4>
+				<div class="Foodlist">
+					<!-- Possibility to add food -->
+					<table class="table" id="food-table">
+						<thead>
+							<tr>
+								<th scope="col">Name</th>
+								<th scope="col">Price</th>
+								<th scope="col">Amount/Man</th>
+								<th scope="col">Amount/Woman</th>
+								<th scope="col">Amount/Child</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for food in user.food %}
+							<tr>
+								<td scope="row">{{ food.name }}</td>
+								<td scope="row">{{ food.price }}</td>
+								<td scope="row">{{ food.amount_1 }}</td>
+								<td scope="row">{{ food.amount_2 }}</td>
+								<td scope="row">{{ food.amount_3 }}</td>
+								<td scope="row">
+									<button style="width: 100%;" type="button" class="close btn btn-primary" onClick="deleteFood({{ food.id }})">
+										<span aria-hidden="true">&#128465;</span>
+									</button>
+								</td>
+							</tr>
+							{% endfor %}
+							<tr>
+								<td><input name="food_name" id="food_name" class="form-control" placeholder="Name"></input></td>
+								<td><input name="food_price" id="food_price" type="number" class="input-number form-control" step="any" placeholder="Price"></input></td>
+								<td><input name="amount_1" id="amount_1" type="number" class="input-number form-control" step="any" placeholder="Amount/Man"></input></td>
+								<td><input name="amount_2" id="amount_2" type="number" class="input-number form-control" step="any" placeholder="Amount/Woman"></input></td>
+								<td><input name="amount_3" id="amount_3" type="number" class="input-number form-control" step="any" placeholder="Amount/Child"></input></td>
+								<td><button type="submit" name="submit" class="add_table_value btn btn-primary" value="add_food">Add</button></td>
+							</tr>
+						</tbody>
+					
+					</table>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}

@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+:root {
+  --primary-color: black;
+}
+
+body {
+  background: #F2F2F2;
+  margin: 0;
+  font-family: "Poppins";
+  color: black;
+}
+
+
+.btn-primary {
+  color: var(--primary-color);
+  background-color: rgb(206, 204, 197);
+  border: solid black;
+  border-width: 1px;
+}
+
+.btn-secondary {
+  color: var(--primary-color);
+  background-color: rgb(206, 204, 197);
+  border: solid black;
+  border-width: 1px;
+}
+
+
+.btn-primary:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-color: white;
+}
+
+.btn-secondary:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-color: white;
+}
+
+.get-csv {
+  width: 100%;
+  height: 100%;
+  padding: 1em 0 1 em 0;
+}
+
+

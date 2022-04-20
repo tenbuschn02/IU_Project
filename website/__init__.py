@@ -4,19 +4,21 @@ from os import path
 from flask_login import LoginManager
 from datetime import datetime
 
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'key'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-    #Test: maybe to be removed
+    # Upload and download folder for csv guestlist
     UPLOAD_FOLDER = 'website/static/files'
     app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
-    #
+    
 
     from .views import views
     from .auth import auth
@@ -40,5 +42,8 @@ def create_app():
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
-        db.create_all(app=app)
+        with app.app_context():
+            db.create_all()
         print('Created Database')
+
+
