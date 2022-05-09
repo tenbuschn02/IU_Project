@@ -210,28 +210,33 @@ def foodcalc():
         elif mode == 'add_food':
             # Add new food to the food list
             food_name = request.form.get('food_name')
-            food_price = request.form.get('food_price', type=int)
-            amount_1 = request.form.get('amount_1', type=int)
-            amount_2 = request.form.get('amount_2', type=int)
-            amount_3 = request.form.get('amount_3', type=int)
+            food_price = request.form.get('food_price')
+            amount_1 = request.form.get('amount_1')
+            amount_2 = request.form.get('amount_2')
+            amount_3 = request.form.get('amount_3')
 
             if len(food_name) < 1:
                 flash('Pleace enter a name!', category='danger')
-            elif not food_price:
+            elif len(food_price) < 1:
                 flash('Pleace enter a price!', category='danger')
-            elif not amount_1:
+            elif len(amount_1) < 1:
                 flash('Pleace enter an estimated amount for men!', category='danger')
-            elif not amount_2:
+            elif len(amount_2) < 1:
                 flash('Pleace enter an estimated amount for women!', category='danger')
-            elif not amount_3:
+            elif len(amount_3) < 1:
                 flash('Pleace enter an estimated amount for children!', category='danger')
-            elif food_price < 0 or amount_1 < 0 or amount_2 < 0 or amount_3 < 0:
-                flash('Pleace enter only positive numbers for price and amounts', category='danger')
             else:
-                new_food = Food(name=food_name, user_id=current_user.id, price=food_price, amount_1=amount_1, amount_2=amount_2, amount_3=amount_3)
-                db.session.add(new_food)
-                db.session.commit()
-                flash('Food added!', category='success')
+                food_price=int(food_price)
+                amount_1 = int(amount_1)
+                amount_2 = int(amount_2)
+                amount_3 = int(amount_3)
+                if food_price < 0 or amount_1 < 0 or amount_2 < 0 or amount_3 < 0:
+                    flash('Pleace enter only positive numbers for price and amounts', category='danger')
+                else:
+                    new_food = Food(name=food_name, user_id=current_user.id, price=food_price, amount_1=amount_1, amount_2=amount_2, amount_3=amount_3)
+                    db.session.add(new_food)
+                    db.session.commit()
+                    flash('Food added!', category='success')
 
     # get amount of guests per group to show on website and use for calculation for expected amount of needed food
     male_guests = db.session.query(Guest).filter_by(user_id=current_user.id, group_id=1, status_id=2).count()
@@ -258,19 +263,21 @@ def table_overview():
         if mode == 'add_table':
             # Add a new table to the list of tables, including maximum amount of guests
             table_name = request.form.get('table_name')
-            max_guests = request.form.get('max_guests', type=int)
+            max_guests = request.form.get('max_guests')
 
-            if not max_guests:
-                flash('Please define max amount of guests', category='danger') 
-            elif max_guests < 1:
-                flash('Minimum quantity of 1 required', category='danger')
-            elif len(table_name) < 1:
-                flash('Please enter a table name', category='danger')
+            if not table_name:
+                flash('Please enter a table name', category='danger') 
+            elif len(max_guests) < 1:
+                flash('Please define max amount of guests', category='danger')
             else:
-                new_table = Table(name=table_name, user_id=current_user.id, max_guests=max_guests)
-                db.session.add(new_table)
-                db.session.commit()
-                flash('Table added!', category='success')
+                max_guests = int(max_guests)
+                if max_guests < 1:
+                    flash('Minimum quantity of 1 required', category='danger')
+                else:
+                    new_table = Table(name=table_name, user_id=current_user.id, max_guests=max_guests)
+                    db.session.add(new_table)
+                    db.session.commit()
+                    flash('Table added!', category='success')
 
         elif mode == 'assign_table':
             # Assign the selected table to all selected guests
