@@ -256,6 +256,7 @@ def table_overview():
 
     selected_guests = request.form.getlist('selected')
     selected_table = request.form.get('tables')
+    print(selected_table)
 
     if request.method == 'POST':
         mode = request.form['submit']
@@ -300,7 +301,7 @@ def table_overview():
 
 
     # Get list of tables, guest with pending and accepted invitation status and the amount of guests to show on website (page table overview)
-    tableList = Table.query.all()      
+    tableList = db.session.query(Table).filter_by(user_id=current_user.id)     
     guestsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1, table_id = None)
     guestsAccepted = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=2, table_id = None)  
     rowsOpen = db.session.query(Guest).filter_by(user_id=current_user.id, status_id=1, table_id = None).count()
