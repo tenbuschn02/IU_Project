@@ -226,10 +226,10 @@ def foodcalc():
             elif len(amount_3) < 1:
                 flash('Pleace enter an estimated amount for children!', category='danger')
             else:
-                food_price=int(food_price)
-                amount_1 = int(amount_1)
-                amount_2 = int(amount_2)
-                amount_3 = int(amount_3)
+                food_price=float(food_price)
+                amount_1 = float(amount_1)
+                amount_2 = float(amount_2)
+                amount_3 = float(amount_3)
                 if food_price < 0 or amount_1 < 0 or amount_2 < 0 or amount_3 < 0:
                     flash('Pleace enter only positive numbers for price and amounts', category='danger')
                 else:
@@ -256,7 +256,7 @@ def table_overview():
 
     selected_guests = request.form.getlist('selected')
     selected_table = request.form.get('tables')
-    print(selected_table)
+
 
     if request.method == 'POST':
         mode = request.form['submit']
@@ -271,7 +271,7 @@ def table_overview():
             elif len(max_guests) < 1:
                 flash('Please define max amount of guests', category='danger')
             else:
-                max_guests = int(max_guests)
+                max_guests = float(max_guests)
                 if max_guests < 1:
                     flash('Minimum quantity of 1 required', category='danger')
                 else:
