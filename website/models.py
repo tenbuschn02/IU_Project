@@ -39,7 +39,7 @@ def create_groups(*args, **kwargs):
         db.session.commit()
 
 # Containing all guests, including the user id and a group.
-# Column invitation sent not used yet
+# Column 'invitation_sent' not used yet
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
